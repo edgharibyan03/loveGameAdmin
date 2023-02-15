@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import API from '../../services/Api';
 var qs = require('querystringify');
@@ -12,10 +13,33 @@ const errorNotify = () => {
     position: toast.POSITION.TOP_LEFT
   });
 };
+
+export const uploadQuestionImages = createAsyncThunk('game/uploadQuestionImages', (data) => {
+  console.log(data, 'data');
+})
+
 export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (data) => {
   const { cb, ...sendData } = data;
+
+  const imagesUrls = await Promise.all(Array.from(data.images).map(async item => {
+    const formData = await new FormData();
+    await formData.append("file", item);
+    await formData.append("upload_preset", "docs_upload_example_us_preset");
+    const data = await axios.post('https://api.cloudinary.com/v1_1/demo/image/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return data.data;
+  }));
+
+  console.log(imagesUrls, 'urls');
+
   console.log(sendData, "sendDatasendDatasendDatasendData");
-  const response = await API.post('/questions/', sendData);
+  const response = await API.post('/questions/', {
+    ...sendData,
+    images: imagesUrls.map(item => item.url)
+  });
   console.log(response, 'response');
   // cb(response.data);
   return response.data;
@@ -56,5 +80,7 @@ export const questionGameSlice = createSlice({
   },
 
 });
+
+export const addQuestionGameStatus = (state) => state.questionGame.loading
 
 export default questionGameSlice.reducer;
