@@ -58,6 +58,7 @@ const Games = () => {
                   type="text"
                   placeholder={`Write question ${language}`}
                   error={!!errors.question?.message}
+                  className="mb-1"
                 // helperText={errors.username?.message}
                 />
               )}
@@ -126,7 +127,7 @@ const Games = () => {
                 />
               )}
             /> */}
-            <CButton color="info mt-3" disabled={loading} onClick={handleSubmit(onSubmit)}>Submit</CButton>
+            <CButton color="info mt-3 text-white" disabled={loading} onClick={handleSubmit(onSubmit)}>Submit</CButton>
           </CCol>
         </CRow>
       </CContainer>

@@ -90,7 +90,7 @@ const Games = () => {
               )}
             />
             
-            <CButton color="info mt-3" onClick={handleSubmit(onSubmit)}>Submit</CButton>
+            <CButton color="info mt-3 text-white" onClick={handleSubmit(onSubmit)}>Submit</CButton>
           </CCol>
         </CRow>
       </CContainer>

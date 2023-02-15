@@ -32,7 +32,7 @@ function Games() {
             deleteGame(item.id)}} 
             action={item.action} key={index} />)}
         </CRow>
-        <CButton color="info" onClick={handleClick}>Add Game</CButton>
+        <CButton color="info text-white" onClick={handleClick}>Add Game</CButton>
 
       </CContainer>
     </div>

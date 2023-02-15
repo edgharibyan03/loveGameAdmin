@@ -15,7 +15,7 @@ const Games = () => {
         <CRow className="clearfix mb-3">
           {games.map((item, index) => <GameItem name={item.name} language={item.language} link={item.link} key={index} />)}
         </CRow>
-        <CButton color="info" onClick={handleClick}>Add Game</CButton>
+        <CButton color="info text-white" onClick={handleClick}>Add Game</CButton>
 
       </CContainer>
     </div>
