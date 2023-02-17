@@ -20,14 +20,18 @@ const Games = () => {
 
   const filesInputRef = useRef();
 
-  const languages = useMemo(() => (['ru', 'en']), []);
+  const languages = useMemo(() => (['ru', 'en', 'es', 'fr', 'jp', 'cn', 'kr']), []);
   const loading = useSelector((state) => state.questionGame.loading);
   const dispatch = useAppDispatch();
   const onSubmit = () => {
     if (filesInputRef.current.files.length === 3) {
       const data = getValues();
-      const { question_ru, question_en, ...rest } = data;
-      const question_cont = languages.map((lang) => ({ language: lang, question: lang === 'ru' ? question_ru : question_en }));
+      const { ...rest } = data;
+      const question_cont = languages.map((lang) => {
+        return { language: lang, question: data['question_' + lang] }
+      });
+      console.log(question_cont);
+      // const question_cont = languages.map((lang) => ({ language: lang, question: lang === 'ru' ? question_ru : question_en }));
       dispatch(addQuestionGame({
         ...rest,
         category: 1,
