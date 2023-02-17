@@ -1,30 +1,32 @@
-import CIcon from '@coreui/icons-react';
 import { useForm, Controller } from 'react-hook-form';
-import { CButton, CCol, CContainer, CFormCheck, CFormInput, CRow } from '@coreui/react';
-import React from 'react';
-import { addQuestionGame } from 'src/store/Slices/questionGame';
-import { useAppDispatch } from '../../../store';
-import { useMemo } from 'react';
+import {
+  CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
+} from '@coreui/react';
+import React, { useMemo } from 'react';
 import { addActionGame } from 'src/store/Slices/actionGame';
 import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../../store';
+
 const Games = () => {
-  const { register, reset, control, getValues, formState: { errors }, handleSubmit } = useForm({
+  const {
+    control, getValues, formState: { errors }, handleSubmit,
+  } = useForm({
     defaultValues: {
-      action: "",
-      images: []
-    }
+      action: '',
+      images: [],
+    },
   });
-  const languages=useMemo(()=>(['ru','en']),[]); 
+  const languages = useMemo(() => (['ru', 'en']), []);
   const loading = useSelector((state) => state.actionGame.loading);
   const dispatch = useAppDispatch();
   const onSubmit = () => {
     const data = getValues();
-    const {action_ru, action_en, ...rest}=data;
-    const action_cont=languages.map((lang)=>({ "language":lang,  "title": lang==='ru'?action_ru:action_en,}))
+    const { action_ru, action_en, ...rest } = data;
+    const action_cont = languages.map((lang) => ({ language: lang, title: lang === 'ru' ? action_ru : action_en }));
     dispatch(addActionGame({
       ...rest,
       category: 1,
-      action:action_cont
+      action: action_cont,
     }));
   };
   return (
@@ -32,31 +34,32 @@ const Games = () => {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={6}>
-            {languages.map((language,ind)=><Controller
-            key={ind}
-              control={control}
-              name={`action_${language}`}
-              rules={{
-                required: {
-                  value: true,
-                  message: "Պարտադիր է"
-                },
-              }}
-              render={({ field }) => (
-                <CFormInput
-                  onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  type="text"
-                  placeholder={`Write action ${language}`}
-                  error={!!errors.action?.message}
-                  className="mb-1"
-                // helperText={errors.username?.message}
-                />
-              )}
-            />)}
+            {languages.map((language, ind) => (
+              <Controller
+                key={ind}
+                control={control}
+                name={`action_${language}`}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'Պարտադիր է',
+                  },
+                }}
+                render={({ field }) => (
+                  <CFormInput
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    type="text"
+                    placeholder={`Write action ${language}`}
+                    error={!!errors.action?.message}
+                    className="mb-1"
+                  />
+                )}
+              />
+            ))}
             <Controller
               control={control}
-              name='isPremium'
+              name="isPremium"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"
@@ -69,7 +72,7 @@ const Games = () => {
             />
             <Controller
               control={control}
-              name='visible'
+              name="visible"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"

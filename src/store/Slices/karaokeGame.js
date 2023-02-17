@@ -1,15 +1,37 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import API from 'src/services/Api';
+
+const initialState = {
+  games: [],
+};
 
 export const addKaraokeGame = createAsyncThunk('game/addKaraokeGame', async (data) => {
-  // const {cb, ...sendData} = data;
-  // const response: any = await API.post('/news-comment/', sendData)
+  const { cb, ...sendData } = data;
+  console.log(sendData, 'sendData');
+  const response = await API.post('/karaoke/', {
+    karaoke: {
+      language: sendData.language,
+      title: sendData.name,
+    },
+    link: sendData.link,
+    visible: true,
+    category: 1,
+    isPremium: false,
+  });
   // cb(response.data)
-  return data;
+  console.log('data', 'ddddd');
+  return response.data;
 });
-const initialState = [
-  { name: "Ann", language: "ru", link: "https://www.youtube.com/watch?v=GLvohMXgcBo&list=RDMMDqw00lUfPsk&index=27" },
-  { name: "Mary", language: "en", link: "https://www.youtube.com/watch?v=GLvohMXgcBo&list=RDMMDqw00lUfPsk&index=27" },
-];
+
+export const getKaraokeGames = createAsyncThunk(
+  'game/getKaraokeGames',
+  async () => {
+    const response = await API.get('/karaoke/');
+
+    return response.data;
+  },
+);
+
 export const questionGameSlice = createSlice({
   name: 'questionGame',
   initialState,
@@ -20,6 +42,10 @@ export const questionGameSlice = createSlice({
     // });
     builder.addCase(addKaraokeGame.fulfilled, (state, action) => {
       state.questionGame = action.payload;
+    });
+    builder.addCase(getKaraokeGames.fulfilled, (state, action) => {
+      console.log(action.payload, JSON.stringify(state), 'payload');
+      state.games = action.payload;
     });
   },
 

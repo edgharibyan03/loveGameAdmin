@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-'use strict'
-
 module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx}',
@@ -14,4 +12,4 @@ module.exports = {
     '!src/serviceWorker.js',
     '!src/polyfill.js',
   ],
-}
+};

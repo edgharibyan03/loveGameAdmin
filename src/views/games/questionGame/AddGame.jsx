@@ -1,36 +1,38 @@
-import CIcon from '@coreui/icons-react';
 import { useForm, Controller } from 'react-hook-form';
-import { CButton, CCol, CContainer, CFormCheck, CFormInput, CRow } from '@coreui/react';
+import { toast } from 'react-toastify';
+import {
+  CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
+} from '@coreui/react';
 import React, { useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { addQuestionGame } from 'src/store/Slices/questionGame';
 import { useAppDispatch } from '../../../store';
-import { toast } from 'react-toastify';
-const Games = () => {
 
-  const { register, reset, control, getValues, formState: { errors }, handleSubmit } = useForm({
+const Games = () => {
+  const {
+    control, getValues, formState: { errors }, handleSubmit,
+  } = useForm({
     defaultValues: {
-      question: "",
-      images: []
-    }
+      question: '',
+      images: [],
+    },
   });
 
-  const filesInputRef = useRef()
+  const filesInputRef = useRef();
 
-  const languages=useMemo(()=>(['ru','en']),[]); 
+  const languages = useMemo(() => (['ru', 'en']), []);
   const loading = useSelector((state) => state.questionGame.loading);
   const dispatch = useAppDispatch();
   const onSubmit = () => {
-    console.log(filesInputRef.current.files, 'filesInputRef.current');
     if (filesInputRef.current.files.length === 3) {
       const data = getValues();
       const { question_ru, question_en, ...rest } = data;
-      const question_cont = languages.map((lang) => ({ "language": lang, "question": lang === 'ru' ? question_ru : question_en, }));
+      const question_cont = languages.map((lang) => ({ language: lang, question: lang === 'ru' ? question_ru : question_en }));
       dispatch(addQuestionGame({
         ...rest,
         category: 1,
         question: question_cont,
-        images: filesInputRef.current.files
+        images: filesInputRef.current.files,
       }));
     } else {
       toast.warn('Images count should be 3');
@@ -41,31 +43,32 @@ const Games = () => {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={6}>
-            {languages.map((language,ind)=><Controller
-            key={ind}
-              control={control}
-              name={`question_${language}`}
-              rules={{
-                required: {
-                  value: true,
-                  message: "Պարտադիր է"
-                },
-              }}
-              render={({ field }) => (
-                <CFormInput
-                  onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  type="text"
-                  placeholder={`Write question ${language}`}
-                  error={!!errors.question?.message}
-                  className="mb-1"
-                // helperText={errors.username?.message}
-                />
-              )}
-            />)}
+            {languages.map((language, ind) => (
+              <Controller
+                key={ind}
+                control={control}
+                name={`question_${language}`}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'Պարտադիր է',
+                  },
+                }}
+                render={({ field }) => (
+                  <CFormInput
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    type="text"
+                    placeholder={`Write question ${language}`}
+                    error={!!errors.question?.message}
+                    className="mb-1"
+                  />
+                )}
+              />
+            ))}
             <Controller
               control={control}
-              name='isPremium'
+              name="isPremium"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"
@@ -78,7 +81,7 @@ const Games = () => {
             />
             <Controller
               control={control}
-              name='visible'
+              name="visible"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"
@@ -96,7 +99,7 @@ const Games = () => {
             {/* <label className='question-game-files-input-label'>
 
             </label> */}
-            <input multiple ref={filesInputRef} className='question-game-files-input' type="file" id="" />
+            <input multiple ref={filesInputRef} className="question-game-files-input" type="file" id="" />
             {/* <Controller
               control={control}
               name='images'

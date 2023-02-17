@@ -1,11 +1,13 @@
 import React, { Component, Suspense } from 'react';
-import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter, HashRouter, Route, Routes,
+} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import './scss/style.scss';
 
 const loading = (
   <div className="pt-3 text-center">
-    <div className="sk-spinner sk-spinner-pulse"></div>
+    <div className="sk-spinner sk-spinner-pulse" />
   </div>
 );
 

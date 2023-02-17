@@ -1,7 +1,8 @@
 import axios from 'axios';
+import keys from 'src/utils/keys';
 
 const API = axios.create({
-  baseURL: 'http://annaniks.com:5555',
+  baseURL: keys.SERVER_URL,
   responseType: 'json',
   timeout: 1000,
 });

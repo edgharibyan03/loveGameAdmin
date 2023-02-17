@@ -1,20 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import API from '../../services/Api';
-var qs = require('querystringify');
+
 const successNotify = () => {
-  toast.success("Success Notification !", {
-    position: toast.POSITION.TOP_CENTER
+  toast.success('Success Notification !', {
+    position: toast.POSITION.TOP_CENTER,
   });
 };
 const errorNotify = () => {
-  toast.error("Error Notification !", {
-    position: toast.POSITION.TOP_LEFT
+  toast.error('Error Notification !', {
+    position: toast.POSITION.TOP_LEFT,
   });
 };
 export const addActionGame = createAsyncThunk('game/addActionGame', async (data) => {
   const { cb, ...sendData } = data;
-  console.log(sendData, "sendDatasendDatasendDatasendData");
+  console.log(sendData, 'sendDatasendDatasendDatasendData');
   const response = await API.post('/action/', sendData);
   console.log(response, 'response');
   // cb(response.data);
@@ -31,7 +31,7 @@ export const getActionGame = createAsyncThunk('game/getActionGame', async (searc
   if (search) {
     response = await API.get(`/action/${search}`);
   } else {
-    response = await API.get(`/action/`);
+    response = await API.get('/action/');
   }
   console.log(response, 'response');
   return response.data;
@@ -39,7 +39,7 @@ export const getActionGame = createAsyncThunk('game/getActionGame', async (searc
 const initialState = {
   actionGames: [],
   loading: false,
-  delete_loading: false
+  delete_loading: false,
 };
 export const actionGameSlice = createSlice({
   name: 'actionGame',
@@ -53,7 +53,7 @@ export const actionGameSlice = createSlice({
     builder.addCase(addActionGame.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addActionGame.rejected, (state) => {
+    builder.addCase(addActionGame.rejected, () => {
       errorNotify();
     });
     builder.addCase(addActionGame.fulfilled, (state, action) => {
@@ -62,7 +62,7 @@ export const actionGameSlice = createSlice({
       successNotify();
     });
     builder.addCase(deleteActionGame.fulfilled, (state, action) => {
-      let new_list = state.actionGames.filter((item) => (item.id != action.payload));
+      const new_list = state.actionGames.filter((item) => (item.id !== action.payload));
       state.actionGames = new_list;
       state.loading = false;
       successNotify();

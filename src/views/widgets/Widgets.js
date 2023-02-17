@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   CCard,
   CCardBody,
@@ -11,9 +11,9 @@ import {
   CWidgetStatsC,
   CWidgetStatsE,
   CWidgetStatsF,
-} from '@coreui/react'
-import { getStyle } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
+} from '@coreui/react';
+import { getStyle } from '@coreui/utils';
+import CIcon from '@coreui/icons-react';
 import {
   cilArrowRight,
   cilBasket,
@@ -27,15 +27,15 @@ import {
   cilSpeedometer,
   cilUser,
   cilUserFollow,
-} from '@coreui/icons'
-import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import { DocsExample } from 'src/components'
+} from '@coreui/icons';
+import { CChartBar, CChartLine } from '@coreui/react-chartjs';
+import { DocsExample } from 'src/components';
 
-import WidgetsBrand from './WidgetsBrand'
-import WidgetsDropdown from './WidgetsDropdown'
+import WidgetsBrand from './WidgetsBrand';
+import WidgetsDropdown from './WidgetsDropdown';
 
 const Widgets = () => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
   return (
     <CCard className="mb-4">
@@ -136,7 +136,7 @@ const Widgets = () => {
           <CRow>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartBar
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -200,7 +200,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -208,7 +208,7 @@ const Widgets = () => {
             </CCol>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartBar
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -272,7 +272,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -280,7 +280,7 @@ const Widgets = () => {
             </CCol>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartBar
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -344,7 +344,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -352,7 +352,7 @@ const Widgets = () => {
             </CCol>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartLine
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -424,7 +424,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -432,7 +432,7 @@ const Widgets = () => {
             </CCol>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartLine
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -504,7 +504,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -512,7 +512,7 @@ const Widgets = () => {
             </CCol>
             <CCol sm={4} lg={2}>
               <CWidgetStatsE
-                chart={
+                chart={(
                   <CChartLine
                     className="mx-auto"
                     style={{ height: '40px', width: '80px' }}
@@ -584,7 +584,7 @@ const Widgets = () => {
                       },
                     }}
                   />
-                }
+                )}
                 className="mb-4"
                 title="title"
                 value="1,123"
@@ -641,7 +641,7 @@ const Widgets = () => {
                 title="income"
                 value="$1.999,50"
                 color="primary"
-                footer={
+                footer={(
                   <CLink
                     className="font-weight-bold font-xs text-medium-emphasis"
                     href="https://coreui.io/"
@@ -651,7 +651,7 @@ const Widgets = () => {
                     View more
                     <CIcon icon={cilArrowRight} className="float-end" width={16} />
                   </CLink>
-                }
+                )}
               />
             </CCol>
             <CCol xs={12} sm={6} lg={3}>
@@ -661,7 +661,7 @@ const Widgets = () => {
                 title="income"
                 value="$1.999,50"
                 color="info"
-                footer={
+                footer={(
                   <CLink
                     className="font-weight-bold font-xs text-medium-emphasis"
                     href="https://coreui.io/"
@@ -671,7 +671,7 @@ const Widgets = () => {
                     View more
                     <CIcon icon={cilArrowRight} className="float-end" width={16} />
                   </CLink>
-                }
+                )}
               />
             </CCol>
             <CCol xs={12} sm={6} lg={3}>
@@ -681,7 +681,7 @@ const Widgets = () => {
                 title="income"
                 value="$1.999,50"
                 color="warning"
-                footer={
+                footer={(
                   <CLink
                     className="font-weight-bold font-xs text-medium-emphasis"
                     href="https://coreui.io/"
@@ -691,7 +691,7 @@ const Widgets = () => {
                     View more
                     <CIcon icon={cilArrowRight} className="float-end" width={16} />
                   </CLink>
-                }
+                )}
               />
             </CCol>
             <CCol xs={12} sm={6} lg={3}>
@@ -701,7 +701,7 @@ const Widgets = () => {
                 title="income"
                 value="$1.999,50"
                 color="danger"
-                footer={
+                footer={(
                   <CLink
                     className="font-weight-bold font-xs text-medium-emphasis"
                     href="https://coreui.io/"
@@ -711,7 +711,7 @@ const Widgets = () => {
                     View more
                     <CIcon icon={cilArrowRight} className="float-end" width={16} />
                   </CLink>
-                }
+                )}
               />
             </CCol>
           </CRow>
@@ -930,7 +930,7 @@ const Widgets = () => {
         </DocsExample>
       </CCardBody>
     </CCard>
-  )
-}
+  );
+};
 
-export default Widgets
+export default Widgets;

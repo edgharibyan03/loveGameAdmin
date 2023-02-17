@@ -2,43 +2,50 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import API from '../../services/Api';
-var qs = require('querystringify');
+
 const successNotify = () => {
-  toast.success("Success Notification !", {
-    position: toast.POSITION.TOP_CENTER
+  toast.success('Success Notification !', {
+    position: toast.POSITION.TOP_CENTER,
   });
 };
 const errorNotify = () => {
-  toast.error("Error Notification !", {
-    position: toast.POSITION.TOP_LEFT
+  toast.error('Error Notification !', {
+    position: toast.POSITION.TOP_LEFT,
   });
 };
 
 export const uploadQuestionImages = createAsyncThunk('game/uploadQuestionImages', (data) => {
   console.log(data, 'data');
-})
+});
 
 export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (data) => {
   const { cb, ...sendData } = data;
 
-  const imagesUrls = await Promise.all(Array.from(data.images).map(async item => {
+  const imagesUrls = await Promise.all(Array.from(data.images).map(async (item) => {
     const formData = await new FormData();
-    await formData.append("file", item);
-    await formData.append("upload_preset", "docs_upload_example_us_preset");
+    await formData.append('file', item);
+    await formData.append('upload_preset', 'docs_upload_example_us_preset');
     const data = await axios.post('https://api.cloudinary.com/v1_1/demo/image/upload', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return data.data;
   }));
 
   console.log(imagesUrls, 'urls');
 
-  console.log(sendData, "sendDatasendDatasendDatasendData");
+  console.log(sendData, 'sendDatasendDatasendDatasendData');
+
+  const dataToSend = sendData.question.map((item) => ({
+    ...item,
+    images: imagesUrls.map((item) => item.url),
+  }));
+  console.log(dataToSend, 'dataToSend');
+
   const response = await API.post('/questions/', {
     ...sendData,
-    images: imagesUrls.map(item => item.url)
+    question: dataToSend,
   });
   console.log(response, 'response');
   // cb(response.data);
@@ -49,13 +56,13 @@ export const getQuestionGame = createAsyncThunk('game/getQuestionGame', async (s
   if (search) {
     response = await API.get(`/questions/${search}`);
   } else {
-    response = await API.get(`/questions/`);
+    response = await API.get('/questions/');
   }
   console.log(response, 'response');
   return response.data;
 });
 const initialState = {
-  questionGames: []
+  questionGames: [],
 };
 export const questionGameSlice = createSlice({
   name: 'questionGame',
@@ -69,7 +76,7 @@ export const questionGameSlice = createSlice({
     builder.addCase(addQuestionGame.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addQuestionGame.rejected, (state) => {
+    builder.addCase(addQuestionGame.rejected, () => {
       errorNotify();
     });
     builder.addCase(addQuestionGame.fulfilled, (state, action) => {
@@ -81,6 +88,6 @@ export const questionGameSlice = createSlice({
 
 });
 
-export const addQuestionGameStatus = (state) => state.questionGame.loading
+export const addQuestionGameStatus = (state) => state.questionGame.loading;
 
 export default questionGameSlice.reducer;

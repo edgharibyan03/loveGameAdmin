@@ -1,0 +1,51 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "react/function-component-definition": "off",
+        "import/no-unresolved": "off",
+        "react/no-array-index-key": "off",
+        "camelcase": "off",
+        "max-len": "off",
+        "react/prop-types": "off",
+        "linebreak-style": "off",
+        "no-shadow": "off",
+        "no-param-reassign": "off",
+        "react/jsx-filename-extension": "off",
+        "react/jsx-indent-props": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-closing-bracket-location": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/require-default-props": "off",
+        "react/no-unescaped-entities": "off",
+        "import/extensions": "off",
+        "no-underscore-dangle": "off",
+        "import/prefer-default-export": "off",
+        "no-unused-vars": "off",
+        "react/prefer-stateless-function": "off",
+        "no-undef": "off",
+        "import/no-extraneous-dependencies": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "react/forbid-prop-types": "off",
+        "no-unused-expressions": "off",
+        "import/no-cycle": "off",
+        "no-console": "off",
+        "no-alert": "off"
+    }
+}

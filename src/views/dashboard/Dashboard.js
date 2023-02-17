@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import {
   CAvatar,
@@ -17,10 +17,10 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
+} from '@coreui/react';
+import { CChartLine } from '@coreui/react-chartjs';
+import { getStyle, hexToRgba } from '@coreui/utils';
+import CIcon from '@coreui/icons-react';
 import {
   cibCcAmex,
   cibCcApplePay,
@@ -42,28 +42,38 @@ import {
   cilPeople,
   cilUser,
   cilUserFemale,
-} from '@coreui/icons'
+} from '@coreui/icons';
 
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
+import avatar1 from 'src/assets/images/avatars/1.jpg';
+import avatar2 from 'src/assets/images/avatars/2.jpg';
+import avatar3 from 'src/assets/images/avatars/3.jpg';
+import avatar4 from 'src/assets/images/avatars/4.jpg';
+import avatar5 from 'src/assets/images/avatars/5.jpg';
+import avatar6 from 'src/assets/images/avatars/6.jpg';
 
-import WidgetsBrand from '../widgets/WidgetsBrand'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import WidgetsBrand from '../widgets/WidgetsBrand';
+import WidgetsDropdown from '../widgets/WidgetsDropdown';
 
 const Dashboard = () => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
   const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
+    {
+      title: 'Visits', value: '29.703 Users', percent: 40, color: 'success',
+    },
+    {
+      title: 'Unique', value: '24.093 Users', percent: 20, color: 'info',
+    },
+    {
+      title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning',
+    },
+    {
+      title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger',
+    },
+    {
+      title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary',
+    },
+  ];
 
   const progressGroupExample1 = [
     { title: 'Monday', value1: 34, value2: 78 },
@@ -73,19 +83,27 @@ const Dashboard = () => {
     { title: 'Friday', value1: 22, value2: 73 },
     { title: 'Saturday', value1: 53, value2: 82 },
     { title: 'Sunday', value1: 9, value2: 69 },
-  ]
+  ];
 
   const progressGroupExample2 = [
     { title: 'Male', icon: cilUser, value: 53 },
     { title: 'Female', icon: cilUserFemale, value: 43 },
-  ]
+  ];
 
   const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
-  ]
+    {
+      title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235',
+    },
+    {
+      title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223',
+    },
+    {
+      title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564',
+    },
+    {
+      title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319',
+    },
+  ];
 
   const tableExample = [
     {
@@ -176,7 +194,7 @@ const Dashboard = () => {
       payment: { name: 'Amex', icon: cibCcAmex },
       activity: 'Last week',
     },
-  ]
+  ];
 
   return (
     <>
@@ -299,7 +317,11 @@ const Dashboard = () => {
               <CCol className="mb-sm-2 mb-0" key={index}>
                 <div className="text-medium-emphasis">{item.title}</div>
                 <strong>
-                  {item.value} ({item.percent}%)
+                  {item.value}
+                  {' '}
+                  (
+                  {item.percent}
+                  %)
                 </strong>
                 <CProgress thin className="mt-2" color={item.color} value={item.percent} />
               </CCol>
@@ -313,7 +335,12 @@ const Dashboard = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>
+              Traffic
+              {' & '}
+              {' '}
+              Sales
+            </CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol xs={12} md={6} xl={6}>
@@ -369,7 +396,10 @@ const Dashboard = () => {
                       <div className="progress-group-header">
                         <CIcon className="me-2" icon={item.icon} size="lg" />
                         <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">{item.value}%</span>
+                        <span className="ms-auto fw-semibold">
+                          {item.value}
+                          %
+                        </span>
                       </div>
                       <div className="progress-group-bars">
                         <CProgress thin color="warning" value={item.value} />
@@ -377,7 +407,7 @@ const Dashboard = () => {
                     </div>
                   ))}
 
-                  <div className="mb-5"></div>
+                  <div className="mb-5" />
 
                   {progressGroupExample3.map((item, index) => (
                     <div className="progress-group" key={index}>
@@ -385,8 +415,13 @@ const Dashboard = () => {
                         <CIcon className="me-2" icon={item.icon} size="lg" />
                         <span>{item.title}</span>
                         <span className="ms-auto fw-semibold">
-                          {item.value}{' '}
-                          <span className="text-medium-emphasis small">({item.percent}%)</span>
+                          {item.value}
+                          {' '}
+                          <span className="text-medium-emphasis small">
+                            (
+                            {item.percent}
+                            %)
+                          </span>
                         </span>
                       </div>
                       <div className="progress-group-bars">
@@ -421,7 +456,10 @@ const Dashboard = () => {
                       <CTableDataCell>
                         <div>{item.user.name}</div>
                         <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                          <span>{item.user.new ? 'New' : 'Recurring'}</span>
+                          {' '}
+                          | Registered:
+                          {' '}
                           {item.user.registered}
                         </div>
                       </CTableDataCell>
@@ -431,7 +469,10 @@ const Dashboard = () => {
                       <CTableDataCell>
                         <div className="clearfix">
                           <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
+                            <strong>
+                              {item.usage.value}
+                              %
+                            </strong>
                           </div>
                           <div className="float-end">
                             <small className="text-medium-emphasis">{item.usage.period}</small>
@@ -455,7 +496,7 @@ const Dashboard = () => {
         </CCol>
       </CRow>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
