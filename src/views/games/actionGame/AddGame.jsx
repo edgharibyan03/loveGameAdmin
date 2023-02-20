@@ -16,13 +16,16 @@ const Games = () => {
       images: [],
     },
   });
-  const languages = useMemo(() => (['ru', 'en']), []);
+  const languages = useMemo(() => (['ru', 'en', 'es', 'fr', 'jp', 'cn', 'kr']), []);
   const loading = useSelector((state) => state.actionGame.loading);
   const dispatch = useAppDispatch();
   const onSubmit = () => {
     const data = getValues();
-    const { action_ru, action_en, ...rest } = data;
-    const action_cont = languages.map((lang) => ({ language: lang, title: lang === 'ru' ? action_ru : action_en }));
+    const { ...rest } = data;
+    const action_cont = languages.map((lang) => {
+      return { language: lang, title: data['action_' + lang] }
+    });
+    console.log(action_cont);
     dispatch(addActionGame({
       ...rest,
       category: 1,
@@ -65,6 +68,7 @@ const Games = () => {
                   id="flexCheckDefault"
                   label="Is Premium"
                   onChange={(e) => field.onChange(e)}
+                  defaultChecked={field.value}
                   value={field.value}
                   error={!!errors.isPremium?.message}
                 />
@@ -78,6 +82,7 @@ const Games = () => {
                   id="flexCheckDefault"
                   label="Visible"
                   onChange={(e) => field.onChange(e)}
+                  defaultChecked={field.value}
                   value={field.value}
                   error={!!errors.visible?.message}
                 />

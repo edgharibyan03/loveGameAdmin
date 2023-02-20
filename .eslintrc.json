@@ -46,6 +46,9 @@
         "no-unused-expressions": "off",
         "import/no-cycle": "off",
         "no-console": "off",
-        "no-alert": "off"
+        "no-alert": "off",
+        "arrow-body-style": "off",
+        "prefer-template": "off",
+        "semi": "off"
     }
 }
