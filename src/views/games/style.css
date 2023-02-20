@@ -29,3 +29,24 @@
 .karaoke-edit-modal-input .MuiFormControl-root{
   width: 100%;
 }
+
+.karaoke-edit-modal-footer{
+  display: flex;
+  flex-direction: column;
+}
+
+.questions-item-body-img{
+  width: 200px;
+  margin-top: 20px;
+}
+
+.karaoke-edit-modal-cont-inputs{
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.karaoke-edit-modal-cont-inputs .MuiFormControl-root{
+  width: 100%;
+  margin-bottom: 10px;
+}

@@ -44,6 +44,7 @@ export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (d
 
 export const getQuestionGame = createAsyncThunk('game/getQuestionGame', async (search) => {
   let response;
+  console.log(search, 'search');
 
   if (search) {
     response = await API.get(`/questions/${search}`);

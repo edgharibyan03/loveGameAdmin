@@ -1,7 +1,9 @@
 import {
   CAccordion, CButton, CContainer, CRow,
 } from '@coreui/react';
-import React, { useEffect, useCallback, useState } from 'react';
+import React, {
+  useEffect, useCallback, useState, useRef,
+} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -26,6 +28,10 @@ function Games() {
 
   const { search } = useLocation();
 
+  const isPremiumCheckboxRef = useRef(null);
+  const visibleCheckboxRef = useRef(null);
+  const categoryInputRef = useRef(null)
+
   const [paginationIndex, setPaginationIndex] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentActionId, setCurrentActionId] = useState(null);
@@ -37,7 +43,6 @@ function Games() {
 
   const handleOpenEditModal = useCallback((id) => {
     setCurrentActionId(id);
-    console.log(games, id, 'dddddddddddddddddddddd');
     setCurrentAction(games.find((item) => item.id === id));
     setOpenEditModal(true);
   }, [games]);
@@ -62,9 +67,18 @@ function Games() {
   }, []);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
+    const category = categoryInputRef.current?.value;
+    const visible = visibleCheckboxRef.current?.checked;
+    const ispremium = isPremiumCheckboxRef.current?.checked;
+
     setOpenEditModal(false);
-    dispatch(editActionGame(currentAction));
-  }, [currentAction]);
+    dispatch(editActionGame({
+      ...currentAction,
+      visible,
+      ispremium,
+      category,
+    }));
+  }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
 
   useEffect(() => {
     dispatch(getActionGame(search));
@@ -101,6 +115,9 @@ function Games() {
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
         handleSetActions={handleSetActions}
+        isPremiumCheckbox={isPremiumCheckboxRef}
+        isVisible={visibleCheckboxRef}
+        categoryInput={categoryInputRef}
       />
     </div>
   );

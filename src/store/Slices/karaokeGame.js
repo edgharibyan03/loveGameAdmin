@@ -61,8 +61,6 @@ export const editKaraoke = createAsyncThunk(
   async (data) => {
     const response = await API.put(`/karaoke/${data.id}`, data);
 
-    console.log(data, 'data');
-
     data.handleGetGames();
 
     return response.data;
@@ -102,6 +100,8 @@ export const questionGameSlice = createSlice({
 
         return item;
       });
+
+      successNotify()
     });
   },
 

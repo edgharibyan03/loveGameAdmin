@@ -5,27 +5,42 @@ import {
   CAccordion, CButton, CContainer,
 } from '@coreui/react';
 import { deleteQuestion, getQuestionGame, questionsLoadingStatus } from 'src/store/Slices/questionGame';
-import { useAppDispatch, use, useAppSelector } from 'src/store';
+import { useAppDispatch } from 'src/store';
 import { CircularProgress, Pagination } from '@mui/material';
 import GameItem from './GameItem';
+import EditQuestionGame from './EditGame';
 
 const Games = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
+  const { search } = useLocation();
+
   const loading = useSelector(questionsLoadingStatus);
 
   const [paginationIndex, setPaginationIndex] = useState(0);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [currentQuestionGameId, setCurrentQuestionGameId] = useState(null);
 
   const handleClick = useCallback(() => navigate('/question-game/add-game'), []);
 
-  const { search } = useLocation();
   const games = useSelector((state) => state.questionGame);
   console.log(games.questionGames, 'paginationIndex');
 
   const handleDeleteQuestion = useCallback((id) => {
     dispatch(deleteQuestion(id));
+  }, []);
+
+  const handleOpenEditModal = useCallback((id) => {
+    setCurrentQuestionGameId(id);
+    setOpenEditModal(true);
+  }, []);
+
+  console.log(currentQuestionGameId, 'currentQuestionGameId');
+
+  const handleCloseEditModal = useCallback(() => {
+    setOpenEditModal(false);
   }, []);
 
   useEffect(() => {
@@ -40,8 +55,8 @@ const Games = () => {
             {games.questionGames?.slice(paginationIndex * 10, (paginationIndex * 10 + 21)).map((item, index) => (
               <GameItem
                 handleDeleteQuestion={handleDeleteQuestion}
+                handleOpenEditModal={handleOpenEditModal}
                 question={item}
-                index={index}
                 key={index}
               />
             ))}
@@ -50,6 +65,10 @@ const Games = () => {
         <CButton color="info text-white" onClick={handleClick}>Add Game</CButton>
         </CContainer>
       )}
+      <EditQuestionGame
+        open={openEditModal}
+        handleClose={handleCloseEditModal}
+      />
     </div>
   );
 };

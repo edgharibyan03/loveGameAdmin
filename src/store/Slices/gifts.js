@@ -7,6 +7,12 @@ const initialState = {
   gifts: [],
 };
 
+const successNotify = () => {
+  toast.success('Success Notification !', {
+    position: toast.POSITION.TOP_CENTER,
+  });
+};
+
 export const createGift = createAsyncThunk('game/addGift', async (data) => {
   console.log(data, 'data');
 
@@ -38,6 +44,36 @@ export const getGifts = createAsyncThunk(
   },
 );
 
+export const deleteGift = createAsyncThunk(
+  'game/deleteGift',
+  async (id) => {
+    const response = await API.delete(`/gift/${id}`);
+
+    return id;
+  },
+);
+
+export const editGift = createAsyncThunk(
+  'game/editGift',
+  async (data) => {
+    const formData = await new FormData();
+    await formData.append('file', data.image);
+    await formData.append('upload_preset', 'docs_upload_example_us_preset');
+    const image = await axios.post('https://api.cloudinary.com/v1_1/demo/image/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    const response = await API.put(`/gifts/${data.id}`), {
+      ...data,
+      // path: image.data.path
+    };
+
+    return response.data;
+  },
+)
+
 export const giftsSlice = createSlice({
   name: 'questionGame',
   initialState,
@@ -48,6 +84,12 @@ export const giftsSlice = createSlice({
     builder.addCase(createGift.fulfilled, (state, action) => {
       toast.success('The Gift is created');
     });
+
+    builder.addCase(deleteGift.fulfilled, (state, action) => {
+      state.gifts = state.gifts.filter((item) => item.id !== action.payload);
+
+      successNotify();
+    })
   },
 
 });

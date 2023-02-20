@@ -1,6 +1,6 @@
 import {
   Button,
-  Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField,
+  Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Checkbox, FormControlLabel,
 } from '@mui/material';
 
 import React from 'react';
@@ -11,6 +11,9 @@ export default function EditActionGame({
   handleCloseAndUpdate,
   action,
   handleSetActions,
+  isPremiumCheckbox,
+  isVisible,
+  categoryInput,
 }) {
   console.log(action, 'action');
 
@@ -45,40 +48,17 @@ export default function EditActionGame({
                   onChange={(e) => {
                     handleSetActions(e.target.value, item.language);
                   }}
-                  // size="small"
-                  // inputRef={langInputRef}
                   type="text" />
               </div>
             ))
           }
-          {/* <TextField
-            id="outlined-basic"
-            label="Language"
-            defaultValue={karaoke?.karaoke.language}
-            variant="outlined"
-            // size="small"
-            placeholder="Language"
-            inputRef={langInputRef}
-            type="text" />
-          <TextField
-            id="outlined-basic"
-            label="Title"
-            defaultValue={karaoke?.karaoke.title}
-            variant="outlined"
-            // size="small"
-            placeholder="Title"
-            inputRef={titleInputRef}
-            type="text" />
-          <TextField
-            id="outlined-basic"
-            label="Link"
-            defaultValue={karaoke?.link}
-            variant="outlined"
-            // size="small"
-            placeholder="Link"
-            inputRef={linkInputRef}
-            type="text" /> */}
+          <div className="karaoke-edit-modal-footer">
+            <TextField inputRef={categoryInput} defaultValue={action?.category} id="outlined-basic" label="Category" variant="outlined" />
+            <FormControlLabel inputRef={isPremiumCheckbox} control={<Checkbox defaultChecked={action?.ispremium} />} label="Is Premium" />
+            <FormControlLabel inputRef={isVisible} control={<Checkbox defaultChecked={action?.visible} />} label="Visible" />
+          </div>
         </Box>
+
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={handleClose}>Disagree</Button>

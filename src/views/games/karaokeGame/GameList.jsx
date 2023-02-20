@@ -25,6 +25,10 @@ const Games = () => {
   const games = useSelector((state) => state.karaokeGame);
   const loading = useSelector(karaokeLoading);
 
+  const isPremiumCheckboxRef = useRef(null);
+  const visibleCheckboxRef = useRef(null);
+  const categoryInputRef = useRef(null)
+
   const [paginationIndex, setPaginationIndex] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentKaraokeId, setCurrentKaraokeId] = useState(null);
@@ -56,6 +60,10 @@ const Games = () => {
     const titleInputRefValue = titleInputRef.current.value;
     const linkInputRefValue = linkInputRef.current.value;
 
+    const category = categoryInputRef.current?.value;
+    const visible = visibleCheckboxRef.current?.checked;
+    const ispremium = isPremiumCheckboxRef.current?.checked;
+
     const data = {
       id: currentKaraokeId,
       karaoke: {
@@ -63,9 +71,9 @@ const Games = () => {
         title: titleInputRefValue,
       },
       link: linkInputRefValue,
-      visible: true,
-      category: 1,
-      ispremium: false,
+      visible,
+      category,
+      ispremium,
       handleGetGames,
     };
 
@@ -73,7 +81,15 @@ const Games = () => {
       setOpenEditModal(false);
       dispatch(editKaraoke(data));
     }
-  }, [langInputRef, titleInputRef, linkInputRef, currentKaraokeId]);
+  }, [
+    langInputRef,
+    titleInputRef,
+    linkInputRef,
+    currentKaraokeId,
+    categoryInputRef,
+    visibleCheckboxRef,
+    isPremiumCheckboxRef,
+  ]);
 
   useEffect(() => {
     handleGetGames();
@@ -110,6 +126,9 @@ const Games = () => {
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
         karaoke={games.games.find((item) => item.id === currentKaraokeId)}
+        isPremiumCheckbox={isPremiumCheckboxRef}
+        isVisible={visibleCheckboxRef}
+        categoryInput={categoryInputRef}
       />
     </div>
   );

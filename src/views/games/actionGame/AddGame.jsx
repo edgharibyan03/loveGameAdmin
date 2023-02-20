@@ -22,9 +22,7 @@ const Games = () => {
   const onSubmit = () => {
     const data = getValues();
     const { ...rest } = data;
-    const action_cont = languages.map((lang) => {
-      return { language: lang, title: data['action_' + lang] }
-    });
+    const action_cont = languages.map((lang) => ({ language: lang, title: data['action_' + lang] }));
     console.log(action_cont);
     dispatch(addActionGame({
       ...rest,

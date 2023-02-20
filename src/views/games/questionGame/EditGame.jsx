@@ -1,9 +1,9 @@
 import {
-  Dialog, DialogActions, DialogContent, DialogTitle, OutlinedInput, Button, Box, TextField, FormControlLabel, Checkbox,
+  Dialog, DialogActions, DialogContent, DialogTitle, OutlinedInput, Button, Box, TextField,
 } from '@mui/material';
 import React from 'react';
 
-export default function EditKaraoke({
+export default function EditQuestionGame({
   open,
   handleClose,
   handleCloseAndUpdate,
@@ -11,9 +11,6 @@ export default function EditKaraoke({
   titleInputRef,
   linkInputRef,
   karaoke,
-  isPremiumCheckbox,
-  isVisible,
-  categoryInput,
 }) {
   console.log(karaoke, 'karaoke');
 
@@ -25,7 +22,7 @@ export default function EditKaraoke({
       aria-describedby="alert-dialog-description"
       className="karaoke-edit-modal"
     >
-      <DialogTitle id="alert-dialog-title">
+      {/* <DialogTitle id="alert-dialog-title">
         Update karaoke
       </DialogTitle>
       <DialogContent className="karaoke-edit-modal-cont">
@@ -42,33 +39,28 @@ export default function EditKaraoke({
             label="Language"
             defaultValue={karaoke?.karaoke.language}
             variant="outlined"
+            // size="small"
             placeholder="Language"
             inputRef={langInputRef}
-            type="text"
-          />
+            type="text" />
           <TextField
             id="outlined-basic"
             label="Title"
             defaultValue={karaoke?.karaoke.title}
             variant="outlined"
+            // size="small"
             placeholder="Title"
             inputRef={titleInputRef}
-            type="text"
-          />
+            type="text" />
           <TextField
             id="outlined-basic"
             label="Link"
             defaultValue={karaoke?.link}
             variant="outlined"
+            // size="small"
             placeholder="Link"
             inputRef={linkInputRef}
-            type="text"
-          />
-          <div className="karaoke-edit-modal-footer">
-            <TextField inputRef={categoryInput} defaultValue={karaoke?.category} id="outlined-basic" label="Category" variant="outlined" />
-            <FormControlLabel inputRef={isPremiumCheckbox} control={<Checkbox defaultChecked={karaoke?.ispremium} />} label="Is Premium" />
-            <FormControlLabel inputRef={isVisible} control={<Checkbox defaultChecked={karaoke?.visible} />} label="Visible" />
-          </div>
+            type="text" />
         </Box>
       </DialogContent>
       <DialogActions>
@@ -76,7 +68,7 @@ export default function EditKaraoke({
         <Button variant="contained" onClick={handleCloseAndUpdate} autoFocus>
           Agree
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
   );
 }
