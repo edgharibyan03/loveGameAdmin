@@ -1,24 +1,39 @@
 import React from 'react';
-import { cilTrash } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
+import { CAccordionBody, CAccordionHeader, CAccordionItem } from '@coreui/react';
+import '../../style.css';
 
-const GameItem = ({ action, deleteGame }) => {
+const GameItem = ({
+  action, id, deleteGame, handleOpenEditModal,
+}) => {
   console.log(action, 'action');
   return (
-    <div className="mb-3 d-flex align-items-center justify-content-between game-item">
-      <div>
-        {action.length && action?.map((act, ind) => (
-          <div key={ind} className="d-flex">
-            <span>{act?.title}</span>
-            {' '}
-            -
-            <span>{act?.language}</span>
-          </div>
-        ))}
-      </div>
-      <div><CIcon onClick={deleteGame} icon={cilTrash} size="l" /></div>
-      {/* cilTrash */}
-    </div>
+    <CAccordionItem itemKey={Math.random()} className="questions-item">
+      <CAccordionHeader>
+        <span>
+          Action game №
+          {id}
+        </span>
+      </CAccordionHeader>
+      <CAccordionBody>
+        <ul>
+          {
+            action.map((item) => (
+              <li key={Math.random()}>
+                {item.title}
+                {' '}
+                -
+                {' '}
+                {item.language}
+              </li>
+            ))
+          }
+        </ul>
+        <div className="questions-item-buttons">
+          <button onClick={() => deleteGame(id)} type="button" className="btn btn-danger">Delete</button>
+          <button onClick={() => handleOpenEditModal(id)} type="button" className="btn btn-warning">Edit</button>
+        </div>
+      </CAccordionBody>
+    </CAccordionItem>
   );
 };
 

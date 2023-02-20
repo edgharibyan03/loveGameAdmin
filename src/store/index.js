@@ -14,3 +14,4 @@ export const store = configureStore({
 });
 
 export const useAppDispatch = () => store.dispatch;
+export const useAppSelector = () => store.subscribe;

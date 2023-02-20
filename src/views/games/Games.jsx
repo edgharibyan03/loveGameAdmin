@@ -1,29 +1,29 @@
-import { CContainer, CListGroup, CListGroupItem } from '@coreui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { CContainer, CListGroup, CListGroupItem } from '@coreui/react';
+import './style.css';
 
 const Games = () => (
-  <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <div className="bg-light min-vh-100 d-flex flex-row">
     <CContainer>
       <CListGroup>
         <CListGroupItem>
-          <Link to="/question-game">Game with question</Link>
+          <Link to="/question-game" className="game-item">Game with question</Link>
         </CListGroupItem>
         <CListGroupItem>
-          <Link to="/action-game">Action game</Link>
+          <Link to="/action-game" className="game-item">Action game</Link>
         </CListGroupItem>
         <CListGroupItem>
-          <Link to="/karaoke-game">Karaoke</Link>
+          <Link to="/karaoke-game" className="game-item">Karaoke</Link>
         </CListGroupItem>
         <CListGroupItem>
-          <Link to="/gifts">Gifts</Link>
+          <Link to="/gifts" className="game-item">Gifts</Link>
         </CListGroupItem>
       </CListGroup>
       {/* <CRow className="clearfix">
-          {games.map((item, index) => <GameItem question={item.question} images={item.images} key={index} />)}
-        </CRow>
-        <CButton color="info" onClick={handleClick}>Add Game</CButton> */}
-
+            {games.map((item, index) => <GameItem question={item.question} images={item.images} key={index} />)}
+          </CRow>
+          <CButton color="info" onClick={handleClick}>Add Game</CButton> */}
     </CContainer>
   </div>
 );

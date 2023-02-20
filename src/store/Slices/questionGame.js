@@ -14,10 +14,6 @@ const errorNotify = () => {
   });
 };
 
-export const uploadQuestionImages = createAsyncThunk('game/uploadQuestionImages', (data) => {
-  console.log(data, 'data');
-});
-
 export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (data) => {
   const { cb, ...sendData } = data;
 
@@ -33,44 +29,60 @@ export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (d
     return data.data;
   }));
 
-  console.log(imagesUrls, 'urls');
-
-  console.log(sendData, 'sendDatasendDatasendDatasendData');
-
   const dataToSend = sendData.question.map((item) => ({
     ...item,
     images: imagesUrls.map((item) => item.url),
   }));
-  console.log(dataToSend, 'dataToSend');
 
   const response = await API.post('/questions/', {
     ...sendData,
     question: dataToSend,
   });
-  console.log(response, 'response');
-  // cb(response.data);
+
   return response.data;
 });
+
 export const getQuestionGame = createAsyncThunk('game/getQuestionGame', async (search) => {
   let response;
+
   if (search) {
     response = await API.get(`/questions/${search}`);
   } else {
     response = await API.get('/questions/');
   }
-  console.log(response, 'response');
+
+  console.log(response.data, 'resssss');
+
   return response.data;
 });
+
+export const deleteQuestion = createAsyncThunk(
+  'game/deleteQuestion',
+  async (id) => {
+    const response = await API.delete(`/questions/${id}`);
+
+    console.log(response, 'response');
+
+    return id;
+  },
+);
+
 const initialState = {
   questionGames: [],
+  questionsLoading: true,
 };
+
 export const questionGameSlice = createSlice({
   name: 'questionGame',
   initialState,
   extraReducers: (builder) => {
+    builder.addCase(getQuestionGame.pending, (state, action) => {
+      state.questionsLoading = true;
+    });
     builder.addCase(getQuestionGame.fulfilled, (state, action) => {
       console.log(action.payload, 'action.payload');
       state.questionGames = action.payload;
+      state.questionsLoading = false;
       console.log(state, 'state');
     });
     builder.addCase(addQuestionGame.pending, (state) => {
@@ -84,10 +96,16 @@ export const questionGameSlice = createSlice({
       state.loading = false;
       successNotify();
     });
+    builder.addCase(deleteQuestion.fulfilled, (state, action) => {
+      successNotify();
+
+      state.questionGames = state.questionGames.filter((item) => item.id !== action.payload);
+    });
   },
 
 });
 
 export const addQuestionGameStatus = (state) => state.questionGame.loading;
+export const questionsLoadingStatus = (state) => state.questionGame.questionsLoading;
 
 export default questionGameSlice.reducer;

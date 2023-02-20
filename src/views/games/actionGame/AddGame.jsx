@@ -30,9 +30,9 @@ const Games = () => {
     }));
   };
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="bg-light min-vh-100 d-flex flex-row">
       <CContainer>
-        <CRow className="justify-content-center">
+        <CRow>
           <CCol md={6}>
             {languages.map((language, ind) => (
               <Controller

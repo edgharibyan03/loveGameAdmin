@@ -1,0 +1,31 @@
+.list-group-item .game-item{
+  text-decoration: none;
+  color: #555;
+}
+
+.questions-item-buttons{
+  margin-top: 10px;
+}
+
+.questions-item-buttons .btn{
+  margin-right: 10px !important;
+}
+
+.karaoke-edit-modal .MuiPaper-root{
+  width: 90%;
+}
+
+.karaoke-edit-modal-cont{
+  display: flex;
+  flex-direction: column;
+}
+
+.karaoke-edit-modal-input{
+  display: flex;
+  margin-bottom: 10px !important;
+  width: 100% !important;
+}
+
+.karaoke-edit-modal-input .MuiFormControl-root{
+  width: 100%;
+}
