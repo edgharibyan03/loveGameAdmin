@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import {
   CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
 } from '@coreui/react';
+import { toastAddBody } from 'src/utils/toast';
+import { toast } from 'react-toastify';
 import { createGift } from '../../../store/Slices/gifts';
 import { useAppDispatch } from '../../../store';
 
@@ -32,7 +34,10 @@ const AddGift = () => {
     const data = getValues();
 
     if (filesInputRef.current.files[0]) {
-      dispatch(createGift({ ...data, image: filesInputRef.current.files[0] }));
+      toast.promise(
+        dispatch(createGift({ ...data, image: filesInputRef.current.files[0] })),
+        toastAddBody('gift'),
+      )
     }
     // const { action_ru, action_en, ...rest } = data;
     // const action_cont = languages.map((lang) => ({ "language": lang, "title": lang === 'ru' ? action_ru : action_en, }));

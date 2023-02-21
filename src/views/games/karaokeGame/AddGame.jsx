@@ -1,10 +1,13 @@
 import { useForm, Controller } from 'react-hook-form';
 import {
-  CButton, CCol, CContainer, CFormInput, CRow,
+  CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
 } from '@coreui/react';
 import React from 'react';
 import { addKaraokeGame } from 'src/store/Slices/karaokeGame';
+import { toast } from 'react-toastify';
+import { toastAddBody } from 'src/utils/toast';
 import { useAppDispatch } from '../../../store';
+import '../style.css'
 
 const Games = () => {
   const {
@@ -13,17 +16,24 @@ const Games = () => {
     defaultValues: {
       question: '',
       images: [],
+      category: 0,
+      visible: false,
+      ispremium: false,
     },
   });
   const dispatch = useAppDispatch();
   const onSubmit = () => {
     const data = getValues();
-    dispatch(addKaraokeGame({
-      ...data,
-    }));
+    console.log(data, 'data');
+    toast.promise(
+      dispatch(addKaraokeGame({
+        ...data,
+      })),
+      toastAddBody('karaoke'),
+    )
   };
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row">
+    <div className="bg-light min-vh-100 d-flex flex-row karaoke-game-add">
       <CContainer>
         <CRow>
           <CCol md={6}>
@@ -89,7 +99,56 @@ const Games = () => {
                 />
               )}
             />
-
+            <Controller
+              control={control}
+              name="category"
+              render={({ field }) => (
+                <CFormInput
+                  onChange={(e) => field.onChange(e)}
+                  value={field.value}
+                  type="number"
+                  placeholder="Category"
+                  error={!!errors.category?.message}
+                  className="mb-3"
+                // helperText={errors.username?.message}
+                />
+              )}
+            />
+            <div className="karaoke-game-add-checkboxes">
+              <span>Visible: </span>
+              <Controller
+                control={control}
+                name="visible"
+                render={({ field }) => (
+                  <CFormCheck
+                    onChange={(e) => field.onChange(e)}
+                    checked={field.value}
+                    placeholder="Visible"
+                    defaultChecked={field.value}
+                    error={!!errors.category?.message}
+                    className="mb-3"
+                  />
+                )}
+              />
+            </div>
+            <div className="karaoke-game-add-checkboxes">
+              <span>Is premium: </span>
+              <Controller
+                control={control}
+                name="ispremium"
+                render={({ field }) => (
+                  <CFormCheck
+                    onChange={(e) => field.onChange(e)}
+                    checked={field.value}
+                    placeholder="Is premium"
+                    defaultChecked={field.value}
+                    error={!!errors.category?.message}
+                    className="mb-3"
+                  // helperText={errors.username?.message}
+                  />
+                )}
+              />
+            </div>
             <CButton color="info text-white" onClick={handleSubmit(onSubmit)}>Submit</CButton>
           </CCol>
         </CRow>

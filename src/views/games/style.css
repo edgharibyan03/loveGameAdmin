@@ -50,3 +50,20 @@
   width: 100%;
   margin-bottom: 10px;
 }
+
+.question-edit-modal .MuiPaper-root{
+  width: 90%;
+}
+
+.question-edit-modal-input,
+.question-edit-modal-input > div{
+  width: 100% !important;
+}
+
+.karaoke-game-add-checkboxes > span{
+  margin-right: 5px;
+}
+
+.karaoke-game-add-checkboxes{
+  margin-bottom: 10px;
+}

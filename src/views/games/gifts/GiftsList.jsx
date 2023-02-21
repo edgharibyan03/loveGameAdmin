@@ -7,8 +7,15 @@ import {
   CAccordion,
   CButton, CContainer, CRow,
 } from '@coreui/react';
-import { deleteGift, editGift, getGifts } from 'src/store/Slices/gifts';
+import {
+  deleteGift, editGift, getGifts, getLoading,
+} from 'src/store/Slices/gifts';
 import { useAppDispatch } from 'src/store';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
+import { getPaginationIndex } from 'src/store/Slices/games';
+import { CircularProgress } from '@mui/material';
+import { toastDeleteBody } from 'src/utils/toast';
 import GiftItem from './GiftItem';
 import EditGift from './EditGame';
 import '../style.css'
@@ -18,8 +25,9 @@ function Gifts() {
   const navigate = useNavigate();
 
   const gifts = useSelector((state) => state.gifts.gifts);
+  const paginationIndex = useSelector(getPaginationIndex);
+  const loading = useSelector(getLoading)
 
-  const [paginationIndex, setPaginationIndex] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentGiftId, setCurrentGiftId] = useState(null);
 
@@ -37,7 +45,6 @@ function Gifts() {
 
   const handleOpenEditModal = useCallback((id) => {
     setCurrentGiftId(id);
-    // setCurrentAction(games.find((item) => item.id === id));
     setOpenEditModal(true);
   }, []);
 
@@ -46,30 +53,45 @@ function Gifts() {
   }, []);
 
   const handleDeleteGift = useCallback((id) => {
-    dispatch(deleteGift(id));
+    toast.promise(
+      dispatch(deleteGift(id)),
+      toastDeleteBody('gift'),
+    )
   }, []);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
+    const currentGift = gifts.find((item) => item.id === currentGiftId);
+
     const level = levelInputRef.current.value;
     const category = categoryInputRef.current.value;
     const goldPrice = goldPriceInputRef.current.value;
     const dimondPrice = diamondPriceInputRef.current.value;
     const ispremium = isPremiumPriceInputRef.current.checked;
     const visible = visiblePriceInputRef.current.checked;
-    const image = imageInputRef.current.files[0];
+    const image = imageInputRef.current.files[0] || currentGift.path;
 
-    console.log(image, level, category, goldPrice, dimondPrice, ispremium, visible);
-
-    dispatch(editGift({
-      level,
-      category,
-      goldPrice,
-      dimondPrice,
-      ispremium,
-      visible,
-      image,
-      current,
-    }));
+    toast.promise(
+      dispatch(editGift({
+        level,
+        category,
+        goldPrice,
+        dimondPrice,
+        ispremium,
+        visible,
+        image,
+        id: currentGiftId,
+      })),
+      {
+        pending: 'The gift is changing',
+        success: {
+          render() {
+            setOpenEditModal(false);
+            return 'The gift was changed';
+          },
+        },
+        error: 'Failed to change gift',
+      },
+    )
   }, [
     levelInputRef,
     categoryInputRef,
@@ -82,30 +104,35 @@ function Gifts() {
   ]);
 
   useEffect(() => {
-    dispatch(getGifts());
-  }, []);
+    dispatch(getGifts(`?skip=${paginationIndex * 10}&take=10`));
+  }, [paginationIndex]);
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
-      <CContainer>
+      {loading ? <CircularProgress /> : (
+        <CContainer>
         <CRow className="clearfix mb-3">
           <CAccordion activeItemKey={2}>
-            {gifts?.map((item) => (
+              {_.sortBy(
+                gifts.giftList,
+                'id',
+              )?.map((item) => (
               <GiftItem
                 key={item.id}
                 gift={item}
                 handleDeleteGift={handleDeleteGift}
                 handleOpenEditModal={handleOpenEditModal}
               />
-            ))}
+              ))}
           </CAccordion>
 
         </CRow>
         <CButton color="info text-white" onClick={handleClick}>Add Gifts</CButton>
-      </CContainer>
+        </CContainer>
+      )}
       <EditGift
         open={openEditModal}
-        gift={gifts.find((item) => item.id === currentGiftId)}
+        gift={gifts.giftList.find((item) => item.id === currentGiftId)}
         levelInputRef={levelInputRef}
         categoryInputRef={categoryInputRef}
         goldPriceInputRef={goldPriceInputRef}

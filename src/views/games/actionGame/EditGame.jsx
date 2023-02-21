@@ -15,8 +15,6 @@ export default function EditActionGame({
   isVisible,
   categoryInput,
 }) {
-  console.log(action, 'action');
-
   return (
     <Dialog
       open={open}
@@ -39,7 +37,7 @@ export default function EditActionGame({
         >
           {
             action?.action.map((item) => (
-              <div className="karaoke-edit-modal-input">
+              <div className="karaoke-edit-modal-input" key={Math.random()}>
                 <TextField
                   id="outlined-basic"
                   label={`Action name ${item.language}`}

@@ -6,6 +6,7 @@ import {
 import React, { useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { addQuestionGame } from 'src/store/Slices/questionGame';
+import { toastAddBody } from 'src/utils/toast';
 import { useAppDispatch } from '../../../store';
 
 const Games = () => {
@@ -15,6 +16,8 @@ const Games = () => {
     defaultValues: {
       question: '',
       images: [],
+      ispremium: false,
+      visible: false,
     },
   });
 
@@ -32,20 +35,23 @@ const Games = () => {
       });
       console.log(question_cont);
       // const question_cont = languages.map((lang) => ({ language: lang, question: lang === 'ru' ? question_ru : question_en }));
-      dispatch(addQuestionGame({
-        ...rest,
-        category: 1,
-        question: question_cont,
-        images: filesInputRef.current.files,
-      }));
+      toast.promise(
+        dispatch(addQuestionGame({
+          ...rest,
+          category: 1,
+          question: question_cont,
+          images: filesInputRef.current.files,
+        })).then((response) => console.log(response, 'respondddassas')).catch((err) => console.log(err, 'errsadasd')),
+        toastAddBody('question'),
+      )
     } else {
       toast.warn('Images count should be 3');
     }
   };
   return (
-    <div className="question-game bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="question-game bg-light min-vh-100 ">
       <CContainer>
-        <CRow className="justify-content-center">
+        <CRow>
           <CCol md={6}>
             {languages.map((language, ind) => (
               <Controller
@@ -64,7 +70,7 @@ const Games = () => {
                     value={field.value}
                     type="text"
                     placeholder={`Write question ${language}`}
-                    error={!!errors.question?.message}
+                    error={errors.question?.message}
                     className="mb-1"
                   />
                 )}
@@ -72,16 +78,19 @@ const Games = () => {
             ))}
             <Controller
               control={control}
-              name="isPremium"
-              render={({ field }) => (
-                <CFormCheck
-                  id="flexCheckDefault"
-                  label="Is Premium"
-                  onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  error={!!errors.isPremium?.message}
-                />
-              )}
+              name="ispremium"
+              render={({ field }) => {
+                console.log(errors, field, 'field');
+                return (
+                  <CFormCheck
+                    id="flexCheckDefault"
+                    label="Is Premium"
+                    onChange={(e) => field.onChange(e)}
+                    checked={field.value}
+                    error={errors.ispremium?.message}
+                  />
+                );
+              }}
             />
             <Controller
               control={control}
@@ -91,49 +100,12 @@ const Games = () => {
                   id="flexCheckDefault"
                   label="Visible"
                   onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  error={!!errors.visible?.message}
+                  checked={field.value}
+                  error={errors.visible?.message}
                 />
               )}
             />
-            {/* <IconButton color="primary" aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" />
-              <PhotoCamera />
-            </IconButton> */}
-            {/* <label className='question-game-files-input-label'>
-
-            </label> */}
             <input multiple ref={filesInputRef} className="question-game-files-input" type="file" id="" />
-            {/* <Controller
-              control={control}
-              name='images'
-              rules={{
-                required: {
-                  value: true,
-                  message: "Պարտադիր է"
-                },
-              }}
-              render={({ field }) => (
-                <CFormInput
-                  onChange={(e) => {
-                    const array = e?.target?.files;
-                    // const files = [];
-                    // for (let index = 0; index < array.length; index++) {
-                    //   const element = array[index];
-                    //   files.push(element);
-                    // }
-                    // console.log(files, 'filesfilesfiles');
-                    // field.onChange(files);
-                  }}
-                  value={field.value}
-                  type="file"
-                  placeholder="Write question"
-                  error={!!errors.images?.message}
-                  multiple
-                // helperText={errors.username?.message}
-                />
-              )}
-            /> */}
             <CButton color="info mt-3 text-white" disabled={loading} onClick={handleSubmit(onSubmit)}>Submit</CButton>
           </CCol>
         </CRow>

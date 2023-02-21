@@ -12,6 +12,9 @@ import {
 } from 'src/store/Slices/karaokeGame';
 import { useAppDispatch } from 'src/store';
 import { CircularProgress, Pagination } from '@mui/material';
+import { toast } from 'react-toastify';
+import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
+import { getPaginationIndex } from 'src/store/Slices/games';
 import GameItem from './GameItem';
 import EditKaraoke from './EditGame';
 
@@ -22,14 +25,17 @@ const Games = () => {
 
   const handleClick = () => navigate('/karaoke-game/add-karaoke-game');
 
-  const games = useSelector((state) => state.karaokeGame);
+  const games = useSelector((state) => state.karaokeGame.games);
   const loading = useSelector(karaokeLoading);
+  const paginationIndex = useSelector(getPaginationIndex);
 
   const isPremiumCheckboxRef = useRef(null);
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null)
 
-  const [paginationIndex, setPaginationIndex] = useState(0);
+  console.log(games, 'games');
+
+  // const [paginationIndex, setPaginationIndex] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentKaraokeId, setCurrentKaraokeId] = useState(null);
 
@@ -38,7 +44,10 @@ const Games = () => {
   const linkInputRef = useRef(null);
 
   const handleDeleteKaraoke = useCallback((id) => {
-    dispatch(deleteKaraoke(id));
+    toast.promise(
+      dispatch(deleteKaraoke(id)),
+      toastDeleteBody('karaoke'),
+    )
   }, []);
 
   const handleOpenEditModal = useCallback((id) => {
@@ -51,11 +60,10 @@ const Games = () => {
   }, []);
 
   const handleGetGames = useCallback(() => {
-    dispatch(getKaraokeGames());
-  }, []);
+    dispatch(getKaraokeGames(`?skip=${paginationIndex * 10}&take=10`));
+  }, [paginationIndex]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
-    console.log(langInputRef.current.value, titleInputRef.current.value, linkInputRef.current.value, 'valueeee');
     const langInputRefValue = langInputRef.current.value;
     const titleInputRefValue = titleInputRef.current.value;
     const linkInputRefValue = linkInputRef.current.value;
@@ -78,8 +86,10 @@ const Games = () => {
     };
 
     if (langInputRefValue && titleInputRefValue && linkInputRefValue) {
-      setOpenEditModal(false);
-      dispatch(editKaraoke(data));
+      toast.promise(
+        dispatch(editKaraoke(data)),
+        toastChangeBody('karaoke', handleCloseEditModal),
+      )
     }
   }, [
     langInputRef,
@@ -93,7 +103,9 @@ const Games = () => {
 
   useEffect(() => {
     handleGetGames();
-  }, []);
+  }, [paginationIndex]);
+
+  console.log(games, 'dddsas');
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
@@ -101,20 +113,23 @@ const Games = () => {
         <CContainer>
         <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
-              {_.sortBy(games.games, 'id')?.slice(paginationIndex * 10, (paginationIndex * 10 + 10), 'id').map((item, index) => (
-                <GameItem
-                  name={item.karaoke.title}
-                  language={item.karaoke.language}
-                  link={item.link}
-                  key={index}
-                  handleDeleteKaraoke={handleDeleteKaraoke}
-                  handleOpenEditModal={handleOpenEditModal}
-                  id={item.id}
-                />
-              ))}
+              {_.sortBy(games.karaokeList, 'id').map((item, index) => {
+                console.log(item, 'item');
+                return (
+                  <GameItem
+                    name={item.karaoke.title}
+                    language={item.karaoke.language}
+                    link={item.link}
+                    key={index}
+                    handleDeleteKaraoke={handleDeleteKaraoke}
+                    handleOpenEditModal={handleOpenEditModal}
+                    id={item.id}
+                  />
+                );
+              })}
             </CAccordion>
         </CRow>
-          <Pagination onChange={(_, page) => setPaginationIndex(page - 1)} count={Math.ceil((games.games?.length || 0) / 10)} />
+          {/* <Pagination onChange={(_, page) => setPaginationIndex(page - 1)} count={Math.ceil((games.games?.length || 0) / 10)} /> */}
           <CButton style={{ marginTop: '20px' }} color="info text-white" onClick={handleClick}>Add Game</CButton>
         </CContainer>
       )}
@@ -125,7 +140,7 @@ const Games = () => {
         linkInputRef={linkInputRef}
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
-        karaoke={games.games.find((item) => item.id === currentKaraokeId)}
+        karaoke={games.karaokeList?.find((item) => item.id === currentKaraokeId)}
         isPremiumCheckbox={isPremiumCheckboxRef}
         isVisible={visibleCheckboxRef}
         categoryInput={categoryInputRef}

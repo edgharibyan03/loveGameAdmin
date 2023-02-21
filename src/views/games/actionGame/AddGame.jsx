@@ -5,6 +5,8 @@ import {
 import React, { useMemo } from 'react';
 import { addActionGame } from 'src/store/Slices/actionGame';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { toastAddBody } from 'src/utils/toast';
 import { useAppDispatch } from '../../../store';
 
 const Games = () => {
@@ -14,6 +16,8 @@ const Games = () => {
     defaultValues: {
       action: '',
       images: [],
+      ispremium: false,
+      visible: false,
     },
   });
   const languages = useMemo(() => (['ru', 'en', 'es', 'fr', 'jp', 'cn', 'kr']), []);
@@ -24,11 +28,14 @@ const Games = () => {
     const { ...rest } = data;
     const action_cont = languages.map((lang) => ({ language: lang, title: data['action_' + lang] }));
     console.log(action_cont);
-    dispatch(addActionGame({
-      ...rest,
-      category: 1,
-      action: action_cont,
-    }));
+    toast.promise(
+      dispatch(addActionGame({
+        ...rest,
+        category: 1,
+        action: action_cont,
+      })),
+      toastAddBody('action game'),
+    )
   };
   return (
     <div className="bg-light min-vh-100 d-flex flex-row">
@@ -60,7 +67,7 @@ const Games = () => {
             ))}
             <Controller
               control={control}
-              name="isPremium"
+              name="ispremium"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"

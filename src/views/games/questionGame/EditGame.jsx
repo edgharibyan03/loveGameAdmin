@@ -1,18 +1,28 @@
 import {
-  Dialog, DialogActions, DialogContent, DialogTitle, OutlinedInput, Button, Box, TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Box,
+  TextField,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import React from 'react';
 
 export default function EditQuestionGame({
   open,
   handleClose,
+  isPremiumCheckboxRef,
+  visibleCheckboxRef,
+  categoryInputRef,
   handleCloseAndUpdate,
-  langInputRef,
-  titleInputRef,
-  linkInputRef,
-  karaoke,
+  handleSetQuestions,
+  question,
+  fileInputRef,
 }) {
-  console.log(karaoke, 'karaoke');
+  console.log(question, 'question');
 
   return (
     <Dialog
@@ -20,12 +30,12 @@ export default function EditQuestionGame({
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      className="karaoke-edit-modal"
+      className="question-edit-modal"
     >
-      {/* <DialogTitle id="alert-dialog-title">
-        Update karaoke
+      <DialogTitle id="alert-dialog-title">
+        Update Question Game
       </DialogTitle>
-      <DialogContent className="karaoke-edit-modal-cont">
+      <DialogContent className="question-edit-modal-cont">
         <Box
           component="form"
           sx={{
@@ -34,33 +44,28 @@ export default function EditQuestionGame({
           noValidate
           autoComplete="off"
         >
-          <TextField
-            id="outlined-basic"
-            label="Language"
-            defaultValue={karaoke?.karaoke.language}
-            variant="outlined"
-            // size="small"
-            placeholder="Language"
-            inputRef={langInputRef}
-            type="text" />
-          <TextField
-            id="outlined-basic"
-            label="Title"
-            defaultValue={karaoke?.karaoke.title}
-            variant="outlined"
-            // size="small"
-            placeholder="Title"
-            inputRef={titleInputRef}
-            type="text" />
-          <TextField
-            id="outlined-basic"
-            label="Link"
-            defaultValue={karaoke?.link}
-            variant="outlined"
-            // size="small"
-            placeholder="Link"
-            inputRef={linkInputRef}
-            type="text" />
+          {
+            question?.question.map((item) => (
+              <div className="question-edit-modal-input" key={Math.random()}>
+                <TextField
+                  id="outlined-basic"
+                  label={`Question name ${item.language}`}
+                  defaultValue={item.question}
+                  variant="outlined"
+                  onChange={(e) => {
+                    handleSetQuestions(e.target.value, item.language);
+                  }}
+                  type="text"
+                />
+              </div>
+            ))
+          }
+          <div className="questions-edit-modal-footer">
+            <TextField inputRef={categoryInputRef} defaultValue={question?.category} id="outlined-basic" label="Category" variant="outlined" />
+            <FormControlLabel inputRef={isPremiumCheckboxRef} control={<Checkbox defaultChecked={question?.ispremium} />} label="Is Premium" />
+            <FormControlLabel inputRef={visibleCheckboxRef} control={<Checkbox defaultChecked={question?.visible} />} label="Visible" />
+            <input multiple ref={fileInputRef} type="file" />
+          </div>
         </Box>
       </DialogContent>
       <DialogActions>
@@ -68,7 +73,7 @@ export default function EditQuestionGame({
         <Button variant="contained" onClick={handleCloseAndUpdate} autoFocus>
           Agree
         </Button>
-      </DialogActions> */}
+      </DialogActions>
     </Dialog>
   );
 }

@@ -11,7 +11,10 @@ import { useAppDispatch } from 'src/store';
 import {
   deleteActionGame, editActionGame, getActionGame, getLoading,
 } from 'src/store/Slices/actionGame';
-import { CircularProgress, Pagination } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import { toast } from 'react-toastify';
+import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
+import { getPaginationIndex } from 'src/store/Slices/games';
 import GameItem from './GameItem';
 import EditActionGame from './EditGame';
 
@@ -32,18 +35,22 @@ function Games() {
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null)
 
-  const [paginationIndex, setPaginationIndex] = useState(0);
+  const paginationIndex = useSelector(getPaginationIndex);
+
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentActionId, setCurrentActionId] = useState(null);
   const [currentAction, setCurrentAction] = useState(null);
 
   const handleDeleteGame = useCallback((id) => {
-    dispatch(deleteActionGame(id));
+    toast.promise(
+      dispatch(deleteActionGame(id)),
+      toastDeleteBody('action game'),
+    )
   }, []);
 
   const handleOpenEditModal = useCallback((id) => {
     setCurrentActionId(id);
-    setCurrentAction(games.find((item) => item.id === id));
+    setCurrentAction(games.actionList.find((item) => item.id === id));
     setOpenEditModal(true);
   }, [games]);
 
@@ -71,21 +78,23 @@ function Games() {
     const visible = visibleCheckboxRef.current?.checked;
     const ispremium = isPremiumCheckboxRef.current?.checked;
 
-    setOpenEditModal(false);
-    dispatch(editActionGame({
-      ...currentAction,
-      visible,
-      ispremium,
-      category,
-    }));
+    toast.promise(
+      dispatch(editActionGame({
+        ...currentAction,
+        visible,
+        ispremium,
+        category,
+      })),
+      toastChangeBody('action game', handleCloseEditModal),
+    )
   }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
 
   useEffect(() => {
-    dispatch(getActionGame(search));
-  }, []);
+    dispatch(getActionGame(`?skip=${paginationIndex * 10}&take=10`));
+  }, [paginationIndex]);
 
   useState(() => {
-    setCurrentAction(games.find((item) => +item.id === +currentActionId));
+    setCurrentAction(games?.actionList?.find((item) => +item.id === +currentActionId));
   }, [currentActionId, games]);
 
   return (
@@ -94,7 +103,10 @@ function Games() {
         <CContainer>
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
-              {_.sortBy(games, 'id').slice(paginationIndex * 10, (paginationIndex * 10 + 10), 'id')?.map((item, index) => (
+              {_.sortBy(
+                games.actionList,
+                'id',
+              )?.map((item, index) => (
                 <GameItem
                   deleteGame={handleDeleteGame}
                   handleOpenEditModal={handleOpenEditModal}
@@ -105,13 +117,12 @@ function Games() {
               ))}
             </CAccordion>
           </CRow>
-          <Pagination onChange={(_, page) => setPaginationIndex(page - 1)} count={Math.ceil((games?.length || 0) / 10)} />
           <CButton style={{ marginTop: '10px' }} color="info text-white" onClick={handleClick}>Add Game</CButton>
         </CContainer>
       )}
       <EditActionGame
         open={openEditModal}
-        action={games.find((item) => item.id === currentActionId)}
+        action={games?.actionList?.find((item) => item.id === currentActionId)}
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
         handleSetActions={handleSetActions}

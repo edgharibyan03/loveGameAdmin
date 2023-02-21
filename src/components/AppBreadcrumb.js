@@ -1,11 +1,39 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-
-import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react';
+import React, { useCallback, useMemo } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Pagination } from '@mui/material';
+import { useAppDispatch } from 'src/store';
+import { changePaginationIndex } from 'src/store/Slices/games';
 import routes from '../routes';
 
 const AppBreadcrumb = () => {
+  const karaokeGames = useSelector((state) => state.karaokeGame);
+  const actionGames = useSelector((state) => state.actionGame.actionGames);
+  const gifts = useSelector((state) => state.gifts.gifts);
+  const questionGames = useSelector((state) => state.questionGame);
+
+  console.log(karaokeGames, actionGames, gifts, questionGames, 'ddddasas');
+
   const currentLocation = useLocation().pathname;
+
+  const dispatch = useAppDispatch();
+
+  const games = useMemo(() => {
+    if (currentLocation.includes('gifts')) {
+      return gifts;
+    }
+    if (currentLocation.includes('question-game')) {
+      return questionGames?.questionGames;
+    }
+    if (currentLocation.includes('action-game')) {
+      return actionGames;
+    }
+    if (currentLocation.includes('karaoke-game')) {
+      return karaokeGames?.games;
+    }
+
+    return [];
+  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames]);
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname);
@@ -28,20 +56,28 @@ const AppBreadcrumb = () => {
     return breadcrumbs;
   };
 
+  const handleChangePaginationIndex = useCallback((index) => {
+    dispatch(changePaginationIndex(index));
+  }, [])
+
   const breadcrumbs = getBreadcrumbs(currentLocation);
 
   return (
-    <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
-      {breadcrumbs.map((breadcrumb, index) => (
-        <CBreadcrumbItem
-          {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
-          key={index}
-        >
-          {breadcrumb.name}
-        </CBreadcrumbItem>
-      ))}
-    </CBreadcrumb>
+    <div className="d-flex w-100 justify-content-between">
+      <div className="d-flex">
+        <Link to="/" style={{ listStyleType: 'none', marginRight: '5px' }}>Home</Link>
+        {breadcrumbs.map((breadcrumb) => (
+          <Link style={{ marginLeft: '10px' }} key={Math.random()} to={breadcrumb.pathname}>
+            {breadcrumb.name}
+          </Link>
+        ))}
+      </div>
+      {games && games.count > 0 && (
+        <Pagination
+          onChange={(_, page) => handleChangePaginationIndex(page - 1)}
+          count={Math.ceil((games?.count || 0) / 10)} />
+      )}
+    </div>
   );
 };
 
