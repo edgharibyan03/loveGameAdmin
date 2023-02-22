@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
 import { useAppDispatch } from 'src/store';
@@ -11,8 +11,7 @@ const AppBreadcrumb = () => {
   const actionGames = useSelector((state) => state.actionGame.actionGames);
   const gifts = useSelector((state) => state.gifts.gifts);
   const questionGames = useSelector((state) => state.questionGame);
-
-  console.log(karaokeGames, actionGames, gifts, questionGames, 'ddddasas');
+  const choiceGames = useSelector((state) => state.choiceGame);
 
   const currentLocation = useLocation().pathname;
 
@@ -31,9 +30,12 @@ const AppBreadcrumb = () => {
     if (currentLocation.includes('karaoke-game')) {
       return karaokeGames?.games;
     }
+    if (currentLocation.includes('choice-game')) {
+      return choiceGames?.choices;
+    }
 
     return [];
-  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames]);
+  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames, choiceGames]);
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname);

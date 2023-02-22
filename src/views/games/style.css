@@ -67,3 +67,8 @@
 .karaoke-game-add-checkboxes{
   margin-bottom: 10px;
 }
+
+.choice-game-item-info{
+  display: flex;
+  flex-direction: column;
+}

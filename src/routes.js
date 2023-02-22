@@ -11,6 +11,8 @@ const AddKaraokeGame = React.lazy(() => import('./views/games/karaokeGame/AddGam
 const AddActionGame = React.lazy(() => import('./views/games/actionGame/AddGame'));
 const AddGift = React.lazy(() => import('./views/games/gifts/AddGift'));
 const Gifts = React.lazy(() => import('./views/games/gifts/GiftsList'));
+const AddChoiceGame = React.lazy(() => import('./views/games/choiceGame/AddGame'));
+const ChoiceGame = React.lazy(() => import('./views/games/choiceGame/GameList'));
 // const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'));
@@ -73,6 +75,8 @@ const routes = [
   { path: '/gifts', name: 'Gifts', element: Gifts },
   { path: '/gifts/add-gift', name: 'AddGift', element: AddGift },
   { path: '/action-game/add-action-game', name: 'AddActionGame', element: AddActionGame },
+  { path: '/choice-game', name: 'Choice game', element: ChoiceGame },
+  { path: '/choice-game/add-choice-game', name: 'AddChoiceGame', element: AddChoiceGame },
   // { path: '/', exact: true, name: 'Home' },
   // { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },

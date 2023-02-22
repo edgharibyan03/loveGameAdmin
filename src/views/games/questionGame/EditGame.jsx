@@ -22,8 +22,6 @@ export default function EditQuestionGame({
   question,
   fileInputRef,
 }) {
-  console.log(question, 'question');
-
   return (
     <Dialog
       open={open}
@@ -55,6 +53,8 @@ export default function EditQuestionGame({
                   onChange={(e) => {
                     handleSetQuestions(e.target.value, item.language);
                   }}
+                  // onFocus={(e) => console.log(e, 'eeedsa')}
+                  // onBlurCapture={(e) => console.log(e, 'dsadsadadsa')}
                   type="text"
                 />
               </div>

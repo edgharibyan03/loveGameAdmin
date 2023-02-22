@@ -2,47 +2,40 @@ import { useForm, Controller } from 'react-hook-form';
 import {
   CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
 } from '@coreui/react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { addActionGame } from 'src/store/Slices/actionGame';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastAddBody } from 'src/utils/toast';
+import { addChoiceGame } from 'src/store/Slices/choiceGame';
 import { useAppDispatch } from '../../../store';
 
 const Games = () => {
-  const dispatch = useAppDispatch();
-
-  const loading = useSelector((state) => state.actionGame.loading);
-
   const {
     control, getValues, formState: { errors }, handleSubmit,
   } = useForm({
     defaultValues: {
-      action: '',
-      images: [],
       ispremium: false,
       visible: false,
+      category: 1,
     },
   });
-
   const languages = useMemo(() => (['ru', 'en', 'es', 'fr', 'jp', 'cn', 'kr']), []);
-
-  const onSubmit = useCallback(() => {
+  const loading = useSelector((state) => state.actionGame.loading);
+  const dispatch = useAppDispatch();
+  const onSubmit = () => {
     const data = getValues();
 
-    const { ...rest } = data;
-
-    const action_cont = languages.map((lang) => ({ language: lang, title: data['action_' + lang] }));
+    const choice_cont = languages.map((lang) => ({ language: lang, title: data['choice_' + lang] }));
 
     toast.promise(
-      dispatch(addActionGame({
-        ...rest,
-        action: action_cont,
+      dispatch(addChoiceGame({
+        ...data,
+        chouse: choice_cont,
       })),
-      toastAddBody('action game'),
-    )
-  }, [languages]);
-
+      toastAddBody('choice game'),
+    );
+  };
   return (
     <div className="bg-light min-vh-100 d-flex flex-row">
       <CContainer>
@@ -52,11 +45,11 @@ const Games = () => {
               <Controller
                 key={ind}
                 control={control}
-                name={`action_${language}`}
+                name={`choice_${language}`}
                 rules={{
                   required: {
                     value: true,
-                    message: 'Պարտադիր է',
+                    message: 'Required',
                   },
                 }}
                 render={({ field }) => (
@@ -64,7 +57,7 @@ const Games = () => {
                     onChange={(e) => field.onChange(e)}
                     value={field.value}
                     type="text"
-                    placeholder={`Write action ${language}`}
+                    placeholder={`Write choice ${language}`}
                     error={!!errors.action?.message}
                     className="mb-1"
                   />
@@ -84,9 +77,9 @@ const Games = () => {
                 <CFormInput
                   onChange={(e) => field.onChange(e)}
                   value={field.value}
-                  type="number"
+                  type="text"
                   placeholder="Category"
-                  error={!!errors.category?.message}
+                  error={!!errors.action?.message}
                   className="mb-1"
                 />
               )}
@@ -101,7 +94,7 @@ const Games = () => {
                   onChange={(e) => field.onChange(e)}
                   defaultChecked={field.value}
                   value={field.value}
-                  error={!!errors.isPremium?.message}
+                  error={!!errors.ispremium?.message}
                 />
               )}
             />

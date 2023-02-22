@@ -4,75 +4,77 @@ import {
 import React, {
   useEffect, useCallback, useState, useRef,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
-import { useAppDispatch } from 'src/store';
-import {
-  deleteActionGame, editActionGame, getActionGame, getLoading,
-} from 'src/store/Slices/actionGame';
 import { CircularProgress } from '@mui/material';
-import { toast } from 'react-toastify';
+import { useAppDispatch } from 'src/store';
+import { editActionGame } from 'src/store/Slices/actionGame';
 import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
+import {
+  deleteChoiceGame, editChoiceGame, getChoiceGames, getChoiceGamesData, getChoiceGamesLoading,
+} from 'src/store/Slices/choiceGame';
 import { getPaginationIndex } from 'src/store/Slices/games';
 import GameItem from './GameItem';
-import EditActionGame from './EditGame';
+import EditChoiceGame from './EditGame';
 
 function Games() {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
-  const handleClick = () => navigate('/action-game/add-action-game');
+  const handleClick = () => navigate('/choice-game/add-choice-game');
 
-  const games = useSelector((state) => state.actionGame.actionGames);
+  const games = useSelector(getChoiceGamesData);
 
-  const loading = useSelector(getLoading);
-
-  const { search } = useLocation();
-
-  const isPremiumCheckboxRef = useRef(null);
-  const visibleCheckboxRef = useRef(null);
-  const categoryInputRef = useRef(null)
-  const currentAction = useRef(null)
+  const loading = useSelector(getChoiceGamesLoading);
 
   const paginationIndex = useSelector(getPaginationIndex);
 
+  const isPremiumCheckboxRef = useRef(null);
+  const visibleCheckboxRef = useRef(null);
+  const categoryInputRef = useRef(null);
+  const currentChoice = useRef(null);
+
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [currentActionId, setCurrentActionId] = useState(null);
-  // const [currentAction, setCurrentAction] = useState(null);
+  const [currentChoiceId, setCurrentChoiceId] = useState(null);
 
   const handleDeleteGame = useCallback((id) => {
     toast.promise(
-      dispatch(deleteActionGame(id)),
-      toastDeleteBody('action game'),
-    )
+      dispatch(deleteChoiceGame(id)).catch((err) => console.log(err, 'err')),
+      toastDeleteBody('choice game'),
+    );
   }, []);
 
   const handleOpenEditModal = useCallback((id) => {
-    setCurrentActionId(id);
-    // setCurrentAction(games.actionList.find((item) => item.id === id));
-    currentAction.current = games.actionList.find((item) => item.id === id);
+    setCurrentChoiceId(id);
+    currentChoice.current = games.choiceList.find((item) => item.id === id);
     setOpenEditModal(true);
-  }, [games, currentAction]);
+  }, [games, currentChoice]);
 
   const handleCloseEditModal = useCallback(() => {
     setOpenEditModal(false);
   }, []);
 
-  const handleSetActions = useCallback((title, lang) => {
-    currentAction.current = currentAction.current.action.map((item) => {
-      if (item.language === lang) {
-        return {
-          language: lang,
-          title,
-        };
-      }
-      return item;
-    });
-    // setCurrentAction((prev) => ({
+  const handleSetChoices = useCallback((title, lang) => {
+    console.log(currentChoice.current, title, 'dddd');
+    currentChoice.current = {
+      ...currentChoice.current,
+      chouse: currentChoice.current.chouse.map((item) => {
+        console.log(item, item.language, lang, title, 'info');
+        if (item.language === lang) {
+          return {
+            language: lang,
+            title,
+          };
+        }
+        return item;
+      }),
+    };
+    // setCurrentChoice((prev) => ({
     //   ...prev,
-    //   action: prev.action.map((item) => {
+    //   chouse: prev.chouse.map((item) => {
     //     if (item.language === lang) {
     //       return {
     //         language: lang,
@@ -82,32 +84,33 @@ function Games() {
     //     return item;
     //   }),
     // }));
-  }, [currentAction]);
+  }, [currentChoice]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
     const category = categoryInputRef.current?.value;
     const visible = visibleCheckboxRef.current?.checked;
     const ispremium = isPremiumCheckboxRef.current?.checked;
 
+    console.log(currentChoice, 'currentChoice2');
+
     toast.promise(
-      dispatch(editActionGame({
-        ...currentAction.current,
+      dispatch(editChoiceGame({
+        ...currentChoice.current,
         visible,
         ispremium,
         category,
       })),
-      toastChangeBody('action game', handleCloseEditModal),
-    )
-  }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
+      toastChangeBody('choice game', handleCloseEditModal),
+    );
+  }, [currentChoice, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
 
   useEffect(() => {
-    dispatch(getActionGame(`?skip=${paginationIndex * 10}&take=10`));
+    dispatch(getChoiceGames(`?skip=${paginationIndex * 10}&take=10`));
   }, [paginationIndex]);
 
   useState(() => {
-    currentAction.current = games?.actionList?.find((item) => +item.id === +currentActionId)
-    // setCurrentAction(games?.actionList?.find((item) => +item.id === +currentActionId));
-  }, [currentActionId, games]);
+    currentChoice.current = games?.choiceList?.find((item) => +item.id === +currentChoiceId);
+  }, [currentChoiceId, games, currentChoice]);
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
@@ -116,13 +119,13 @@ function Games() {
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(
-                games.actionList,
+                games.choiceList,
                 'id',
               )?.map((item, index) => (
                 <GameItem
                   deleteGame={handleDeleteGame}
                   handleOpenEditModal={handleOpenEditModal}
-                  action={item}
+                  choice={item}
                   id={item.id}
                   key={index}
                 />
@@ -132,12 +135,12 @@ function Games() {
           <CButton style={{ marginTop: '10px' }} color="info text-white" onClick={handleClick}>Add Game</CButton>
         </CContainer>
       )}
-      <EditActionGame
+      <EditChoiceGame
         open={openEditModal}
-        action={games?.actionList?.find((item) => item.id === currentActionId)}
+        choice={games?.choiceList?.find((item) => item.id === currentChoiceId)}
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
-        handleSetActions={handleSetActions}
+        handleSetChoices={handleSetChoices}
         isPremiumCheckbox={isPremiumCheckboxRef}
         isVisible={visibleCheckboxRef}
         categoryInput={categoryInputRef}

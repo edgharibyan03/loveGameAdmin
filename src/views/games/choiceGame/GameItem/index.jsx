@@ -3,21 +3,21 @@ import { CAccordionBody, CAccordionHeader, CAccordionItem } from '@coreui/react'
 import '../../style.css';
 
 const GameItem = ({
-  action, id, deleteGame, handleOpenEditModal,
+  choice, id, deleteGame, handleOpenEditModal,
 }) => {
-  console.log(action, 'action');
+  console.log(choice, 'choic3231221e');
   return (
-    <CAccordionItem itemKey={Math.random()} className="questions-item">
+    <CAccordionItem itemKey={Math.random()} className="choice-game-item">
       <CAccordionHeader>
         <span>
-          Action game №
+          Choice game №
           {id}
         </span>
       </CAccordionHeader>
       <CAccordionBody>
         <ul>
           {
-            action.action?.map((item) => (
+            choice?.chouse?.map((item) => (
               <li key={Math.random()}>
                 {item.title}
                 {' '}
@@ -32,17 +32,17 @@ const GameItem = ({
           <span>
             Visible:
             {' '}
-            {action.visible ? 'Yes' : 'No'}
+            {choice.visible ? 'Yes' : 'No'}
           </span>
           <span>
             Premium:
             {' '}
-            {action.ispremium ? 'Yes' : 'No'}
+            {choice.ispremium ? 'Yes' : 'No'}
           </span>
           <span>
             Category:
             {' '}
-            {action.category}
+            {choice.category}
           </span>
         </div>
         <div className="questions-item-buttons">

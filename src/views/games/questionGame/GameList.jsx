@@ -29,6 +29,8 @@ const Games = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
+  // const currentQuestion = useRef(null)
+
   const isPremiumCheckboxRef = useRef(null);
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null);
@@ -44,6 +46,7 @@ const Games = () => {
   }, []);
 
   const handleOpenEditModal = useCallback((id) => {
+    // currentQuestion.current = games.questionGames?.questionList.find((item) => item.id === id)
     setCurrentQuestion(games.questionGames?.questionList.find((item) => item.id === id))
     setOpenEditModal(true);
   }, [games]);
@@ -53,6 +56,15 @@ const Games = () => {
   }, []);
 
   const handleSetQuestions = useCallback((question, lang) => {
+    // currentQuestion.current.question = prev.question.map((item) => {
+    //   if (item.language === lang) {
+    //     return {
+    //       language: lang,
+    //       question,
+    //     };
+    //   }
+    //   return item;
+    // }),
     setCurrentQuestion((prev) => ({
       ...prev,
       question: prev.question.map((item) => {

@@ -5,17 +5,17 @@ import {
 
 import React from 'react';
 
-export default function EditActionGame({
+export default function EditChoiceGame({
   open,
   handleClose,
   handleCloseAndUpdate,
-  action,
-  handleSetActions,
+  choice,
+  handleSetChoices,
   isPremiumCheckbox,
   isVisible,
   categoryInput,
 }) {
-  console.log(action, 'action');
+  console.log(choice, 'choice');
 
   return (
     <Dialog
@@ -38,24 +38,24 @@ export default function EditActionGame({
           autoComplete="off"
         >
           {
-            action?.action?.map((item) => (
+            choice?.chouse.map((item) => (
               <div className="karaoke-edit-modal-input" key={Math.random()}>
                 <TextField
                   id="outlined-basic"
-                  label={`Action name ${item.language}`}
+                  label={`Choouse name ${item.language}`}
                   defaultValue={item.title}
                   variant="outlined"
                   onChange={(e) => {
-                    handleSetActions(e.target.value, item.language);
+                    handleSetChoices(e.target.value, item.language);
                   }}
                   type="text" />
               </div>
             ))
           }
           <div className="karaoke-edit-modal-footer">
-            <TextField inputRef={categoryInput} defaultValue={action?.category} id="outlined-basic" label="Category" variant="outlined" />
-            <FormControlLabel inputRef={isPremiumCheckbox} control={<Checkbox defaultChecked={action?.ispremium} />} label="Is Premium" />
-            <FormControlLabel inputRef={isVisible} control={<Checkbox defaultChecked={action?.visible} />} label="Visible" />
+            <TextField inputRef={categoryInput} defaultValue={choice?.category} id="outlined-basic" label="Category" variant="outlined" />
+            <FormControlLabel inputRef={isPremiumCheckbox} control={<Checkbox defaultChecked={choice?.ispremium} />} label="Is Premium" />
+            <FormControlLabel inputRef={isVisible} control={<Checkbox defaultChecked={choice?.visible} />} label="Visible" />
           </div>
         </Box>
 

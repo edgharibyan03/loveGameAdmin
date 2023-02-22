@@ -33,9 +33,6 @@ const Games = () => {
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null)
 
-  console.log(games, 'games');
-
-  // const [paginationIndex, setPaginationIndex] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentKaraokeId, setCurrentKaraokeId] = useState(null);
 
@@ -111,16 +108,16 @@ const Games = () => {
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
-        <CRow className="clearfix mb-3">
+          <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(games.karaokeList, 'id').map((item, index) => {
-                console.log(item, 'item');
                 return (
                   <GameItem
                     name={item.karaoke.title}
                     language={item.karaoke.language}
                     link={item.link}
                     key={index}
+                    karaoke={item}
                     handleDeleteKaraoke={handleDeleteKaraoke}
                     handleOpenEditModal={handleOpenEditModal}
                     id={item.id}
@@ -128,8 +125,7 @@ const Games = () => {
                 );
               })}
             </CAccordion>
-        </CRow>
-          {/* <Pagination onChange={(_, page) => setPaginationIndex(page - 1)} count={Math.ceil((games.games?.length || 0) / 10)} /> */}
+          </CRow>
           <CButton style={{ marginTop: '20px' }} color="info text-white" onClick={handleClick}>Add Game</CButton>
         </CContainer>
       )}
