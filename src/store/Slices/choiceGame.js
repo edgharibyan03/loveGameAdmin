@@ -14,7 +14,7 @@ const initialState = {
 export const getChoiceGames = createAsyncThunk(
   'game/getChoiceGame',
   async (search) => {
-    const response = await API.get(`/chouse/all${search}`);
+    const response = await API.get(`/chouse/all${search}&category=1&ispremium=false&visible=true`);
 
     return response.data;
   },

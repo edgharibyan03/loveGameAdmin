@@ -31,7 +31,7 @@ export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (d
 });
 
 export const getQuestionGame = createAsyncThunk('game/getQuestionGame', async (search) => {
-  const response = await API.get(`/questions/all${search}`);
+  const response = await API.get(`/questions/all${search}&category=null&ispremium=null&visible=null`);
 
   return response.data;
 });

@@ -18,7 +18,7 @@ export const deleteActionGame = createAsyncThunk('game/deleteActionGame', async 
 });
 
 export const getActionGame = createAsyncThunk('game/getActionGame', async (search) => {
-  const response = await API.get(`/action/all${search}`);
+  const response = await API.get(`/action/all${search}&category=1&ispremium=false&visible=false`);
 
   return response.data;
 });

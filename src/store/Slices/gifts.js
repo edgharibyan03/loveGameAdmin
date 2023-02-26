@@ -31,7 +31,7 @@ export const createGift = createAsyncThunk('game/addGift', async (data) => {
 export const getGifts = createAsyncThunk(
   'game/getGifts',
   async (search) => {
-    const response = await API.get(`/gift/all${search}`);
+    const response = await API.get(`/gift/all${search}&category=1&ispremium=false&visible=true`);
 
     return response.data;
   },
