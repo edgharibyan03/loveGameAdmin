@@ -28,7 +28,8 @@ export const addKaraokeGame = createAsyncThunk('game/addKaraokeGame', async (dat
 export const getKaraokeGames = createAsyncThunk(
   'game/getKaraokeGames',
   async (search) => {
-    const response = await API.get(`/karaoke/all${search}&category=null&ispremium=null&visible=null`);
+    console.log(search, 'search');
+    const response = await API.get(`/karaoke/all${search}`);
     return response.data;
   },
 );
