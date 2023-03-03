@@ -75,9 +75,11 @@ function GiftsCategories() {
     currentGiftCategoryId,
   ]);
 
+  console.log(giftsCotegories, 'giftsCotegoriesgiftsCotegoriesgiftsCotegoriesgiftsCotegories');
   useEffect(() => {
     dispatch(getGiftsCategories(`?skip=${paginationIndex * 10}&take=10`));
   }, [paginationIndex]);
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
@@ -90,14 +92,15 @@ function GiftsCategories() {
               )?.map((item, index) => {
                 console.log(item, 'item');
                 return (
-<GiftCategoryItem
-                  key={index + 1}
-                  id={item.id}
-                  title={item.title}
-                  handleDeleteGift={handleDeleteGift}
-                  handleOpenEditModal={handleOpenEditModal}
-                />
-                )
+                  <GiftCategoryItem
+                    key={index + 1}
+                    id={item.id}
+                    title={item.category?.title}
+                    language={item.category?.language}
+                    handleDeleteGift={handleDeleteGift}
+                    handleOpenEditModal={handleOpenEditModal}
+                  />
+                );
               })}
             </CAccordion>
 

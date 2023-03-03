@@ -18,6 +18,7 @@ export const createGiftCategory = createAsyncThunk('gift/giftCategoryAdd', async
 export const getGiftsCategories = createAsyncThunk(
   'gift/giftCategory',
   async (search) => {
+    // const response = await API.get('gift-category/');
     const response = await API.get(`gift-category/all${search}&query=`);
     return response.data;
   },

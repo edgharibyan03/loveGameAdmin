@@ -88,12 +88,12 @@ export const giftsSlice = createSlice({
       state.gifts.giftList = state.gifts.giftList.filter((item) => item.id !== action.payload);
     });
 
-    builder.addCase(editGift.fulfilled, (state, action) => {
-      state.gifts = [
-        ...state.gifts.filter((item) => item.id !== action.payload.id),
-        action.payload,
-      ];
-    });
+    // builder.addCase(editGift.fulfilled, (state, action) => {
+    //   state.gifts.giftList = [
+    //     ...state.gifts.giftList.filter((item) => item.id !== action.payload.id),
+    //     action.payload,
+    //   ];
+    // });
   },
 });
 

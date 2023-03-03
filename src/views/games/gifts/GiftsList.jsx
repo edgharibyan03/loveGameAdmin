@@ -29,11 +29,13 @@ function Gifts() {
   const navigate = useNavigate();
 
   const gifts = useSelector((state) => state.gifts.gifts);
+  const giftsCotegories = useSelector((state) => state.giftsCotegories.giftCategory);
   const paginationIndex = useSelector(getPaginationIndex);
   const loading = useSelector(getLoading)
   const [searchParams, setSearchParams] = useSearchParams();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentGiftId, setCurrentGiftId] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState(null);
 
   const levelInputRef = useRef(null);
   const categoryInputRef = useRef(null);
@@ -42,6 +44,9 @@ function Gifts() {
   const isPremiumPriceInputRef = useRef(null);
   const visiblePriceInputRef = useRef(null);
   const imageInputRef = useRef(null)
+  const timeInputRef = useRef(null);
+  const positionInputRef = useRef(null);
+  const titleInputRef = useRef(null)
 
   const handleClick = useCallback(() => {
     navigate('/gifts/add-gift');
@@ -62,8 +67,11 @@ function Gifts() {
       toastDeleteBody('gift'),
     )
   }, []);
+
   const handleGetGifts = useCallback((data) => {
     const searchObj = Object.fromEntries([...searchParams]);
+    setCurrentCategory(giftsCotegories?.categoryList?.find((item) => item.id === +(data?.category || 0)));
+    console.log(giftsCotegories?.categoryList?.find((item) => item.id === +(data?.category || 0)), 'data');
     const filterObj = {
       category: '1',
       ispremium: 'true',
@@ -76,10 +84,11 @@ function Gifts() {
     setSearchParams(filterObj);
     const filterStringify = qs.stringify(filterObj, true)
     dispatch(getGifts(filterStringify));
-  }, [paginationIndex]);
+  }, [paginationIndex, giftsCotegories]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
-    const currentGift = gifts.find((item) => item.id === currentGiftId);
+    console.log(gifts, 'gifts');
+    const currentGift = gifts.giftList.find((item) => item.id === currentGiftId);
 
     const level = levelInputRef.current.value;
     const category = categoryInputRef.current.value;
@@ -88,16 +97,24 @@ function Gifts() {
     const ispremium = isPremiumPriceInputRef.current.checked;
     const visible = visiblePriceInputRef.current.checked;
     const image = imageInputRef.current.files[0] || currentGift.path;
+    const title = titleInputRef.current.value;
+    const position = positionInputRef.current.value;
+    const time = timeInputRef.current.value || null;
+
+    console.log(giftsCotegories.categoryList.find((item) => +item.id === +category), '3030030320130210321');
 
     toast.promise(
       dispatch(editGift({
         level,
-        category,
+        category: giftsCotegories.categoryList.find((item) => +item.id === +category),
         goldPrice,
         dimondPrice,
         ispremium,
         visible,
         image,
+        position,
+        time,
+        title,
         id: currentGiftId,
       })),
       {
@@ -105,12 +122,13 @@ function Gifts() {
         success: {
           render() {
             setOpenEditModal(false);
+            handleGetGifts()
             return 'The gift was changed';
           },
         },
         error: 'Failed to change gift',
       },
-    )
+    ).catch((err) => console.log(err, 'errr3333'))
   }, [
     levelInputRef,
     categoryInputRef,
@@ -120,17 +138,26 @@ function Gifts() {
     visiblePriceInputRef,
     imageInputRef,
     currentGiftId,
+    titleInputRef,
+    positionInputRef,
+    timeInputRef,
   ]);
 
   useEffect(() => {
     handleGetGifts()
   }, [paginationIndex]);
 
+  console.log(currentCategory, 'currentCategorycurrentCategorycurrentCategory');
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
-          <Filters setFilter={(val) => { handleGetGifts(val) }} />
+          <Filters
+            filters={giftsCotegories?.categoryList || []}
+            currentCategory={currentCategory}
+            setFilter={(val) => { handleGetGifts(val); }}
+          />
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(
@@ -145,7 +172,6 @@ function Gifts() {
                 />
               ))}
             </CAccordion>
-
           </CRow>
           <CButton color="info text-white" onClick={handleClick}>Add Gifts</CButton>
         </CContainer>
@@ -160,6 +186,9 @@ function Gifts() {
         isPremiumCheckbox={isPremiumPriceInputRef}
         isVisibleCheckbox={visiblePriceInputRef}
         imageInputRef={imageInputRef}
+        timeInputRef={timeInputRef}
+        positionInputRef={positionInputRef}
+        titleInputRef={titleInputRef}
         handleClose={handleCloseEditModal}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}
       />

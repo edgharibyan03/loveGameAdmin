@@ -10,6 +10,8 @@ import { getGiftsCategories } from 'src/store/Slices/giftsCotegories';
 import { createGift } from '../../../store/Slices/gifts';
 import { useAppDispatch } from '../../../store';
 
+const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+
 const AddGift = () => {
   const {
     control, getValues, formState: { errors }, handleSubmit,
@@ -23,7 +25,7 @@ const AddGift = () => {
       categoryId: null,
       ispremium: true,
       time: null,
-      fixedPosition: '',
+      position: positions[0],
       title: '',
     },
   });
@@ -35,21 +37,22 @@ const AddGift = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit = () => {
-    const { fixedPosition, ...data } = getValues();
+    // const { fixedPosition, ...data } = getValues();
+    const data = getValues();
     console.log(data, 'dataaaaaaa');
     if (filesInputRef.current.files[0]) {
       toast.promise(
-        dispatch(createGift({ ...data, position: { fixedPosition }, image: filesInputRef.current.files[0] })),
+        dispatch(createGift({ ...data, image: filesInputRef.current.files[0] })),
         toastAddBody('gift'),
       )
     }
-    // const { action_ru, action_en, ...rest } = data;
-    // const action_cont = languages.map((lang) => ({ "language": lang, "title": lang === 'ru' ? action_ru : action_en, }));
-    // dispatch(addActionGame(data));
   };
   useEffect(() => {
-    dispatch(getGiftsCategories('?skip=0&take=10'));
+    dispatch(getGiftsCategories('?skip=0&take=1000'));
   }, []);
+
+  console.log(errors, 'giftsCotegoriesgiftsCotegories');
+
   return (
     <div className="bg-light min-vh-100 d-flex">
       <CContainer>
@@ -70,7 +73,19 @@ const AddGift = () => {
                   onChange={(e) => field.onChange(e)}
                 >
                   <option>Open this select menu</option>
-                  { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))}
+                  {/* { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))} */}
+                  {giftsCotegories?.categoryList?.map((category, ind) => {
+                    return (
+                      category.category && (
+                        <option
+                          key={ind}
+                          value={+category.id}
+                        >
+                          {category.category.title}
+                        </option>
+                      )
+                    );
+                  })}
                 </CFormSelect>
               )}
             />
@@ -160,7 +175,7 @@ const AddGift = () => {
             />
             <Controller
               control={control}
-              name="fixedPosition"
+              name="position"
               rules={{
                 required: {
                   value: true,
@@ -168,16 +183,38 @@ const AddGift = () => {
                 },
               }}
               render={({ field }) => (
-                <CFormInput
-                  onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  type="text"
-                  placeholder="Fixed Position"
-                  error={!!errors.fixedPosition?.message}
-                  className="mb-1"
-                // helperText={errors.username?.message}
-                />
+                <CFormSelect
+                  aria-label="Default select example"
+                  defaultValue={positions[0]}
+                  onChange={(e) => {
+                    console.log(e, '321030210321031');
+                    field.onChange(e);
+                  }}
+                >
+                  {/* { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))} */}
+                  {positions?.map((position, ind) => {
+                    return (
+                      <option
+                        key={ind}
+                        value={position}
+                      >
+                        {position}
+                      </option>
+                    );
+                  })}
+                </CFormSelect>
               )}
+              // render={({ field }) => (
+              //   <CFormInput
+              //     onChange={(e) => field.onChange(e)}
+              //     value={field.value}
+              //     type="text"
+              //     placeholder="Fixed Position"
+              //     error={!!errors.fixedPosition?.message}
+              //     className="mb-1"
+              //   // helperText={errors.username?.message}
+              //   />
+              // )}
             />
             <Controller
               control={control}

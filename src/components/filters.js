@@ -2,39 +2,63 @@ import React, {
   useCallback, useEffect, useState,
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CContainer, CFormCheck, CFormInput } from '@coreui/react';
+import {
+  CContainer, CFormCheck, CFormInput, CFormSelect,
+} from '@coreui/react';
 
 // routes config
-import routes from '../routes';
+import { getGiftsCategories } from 'src/store/Slices/giftsCotegories';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from 'src/store';
 
-const Filters = ({ setFilter }) => {
+const Filters = ({ setFilter, currentCategory, filters }) => {
+  const dispatch = useAppDispatch();
+
   const [data, setData] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const filter = Object.fromEntries([...searchParams]);
 
   const handleChange = useCallback((val) => {
-    console.log(val, 'val');
     setSearchParams({ ...data, ...val });
     setFilter({ ...data, ...val });
     setData({ ...filter });
   }, [data]);
-  // console.log(data, 'data');
-  // console.log(setFilter, 'setFilter');
+
   useEffect(() => {
     setData({ ...filter });
+    dispatch(getGiftsCategories('?skip=0&take=1000'));
   }, []);
+
+  console.log(currentCategory, 'giftsCotegoriesgiftsCotegoriesgiftsCotegoriesgiftsCotegoriesgiftsCotegories');
+
   return (
     <CContainer lg>
-      <CFormInput
-        onChange={(e) => {
-          handleChange({ category: e.target.value });
-        }}
-        value={data?.category}
-        type="number"
-        placeholder="Category"
-        className="mb-1"
-      // helperText={errors.username?.message}
-      />
+      {filters && (
+        <CFormSelect
+          aria-label="Default select example"
+          onChange={(e) => {
+            console.log(e.target.value, '3-123-21-3-213-1');
+            handleChange({ category: e.target.value });
+          }}
+          value={currentCategory?.id}
+        >
+          {/* { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))} */}
+          {filters?.map && filters.map((category, ind) => {
+            console.log(category, 'categoryItem');
+            return (
+              category.category && (
+                <option
+                  key={ind}
+                  value={+category.id}
+                >
+                  {category.category.title}
+                </option>
+              )
+            );
+          })}
+        </CFormSelect>
+      )}
       <CFormCheck
         id="flexCheckDefault"
         label="Is premium"

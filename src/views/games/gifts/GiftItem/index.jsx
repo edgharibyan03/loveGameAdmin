@@ -14,6 +14,11 @@ export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }
       <CAccordionBody className="questions-item-body">
         <ul>
           <li>
+            Gift title:
+            {' '}
+            {gift.title}
+          </li>
+          <li>
             Gift diamond price:
             {' '}
             {gift.dimondPrice}
@@ -31,7 +36,17 @@ export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }
           <li>
             Category:
             {' '}
-            {gift.category.category}
+            {gift.category.category?.title}
+          </li>
+          <li>
+            Time:
+            {' '}
+            {gift.time}
+          </li>
+          <li>
+            Position:
+            {' '}
+            {gift.position}
           </li>
           <li>
             Is premium:

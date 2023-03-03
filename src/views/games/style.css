@@ -72,3 +72,8 @@
   display: flex;
   flex-direction: column;
 }
+
+.gift-category-item{
+  display: flex;
+  flex-direction: column;
+}
