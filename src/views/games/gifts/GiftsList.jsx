@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { getPaginationIndex } from 'src/store/Slices/games';
 import { CircularProgress } from '@mui/material';
 import { toastDeleteBody } from 'src/utils/toast';
+// eslint-disable-next-line import/no-named-as-default
 import GiftItem from './GiftItem';
 import EditGift from './EditGame';
 import '../style.css'
@@ -107,27 +108,29 @@ function Gifts() {
     dispatch(getGifts(`?skip=${paginationIndex * 10}&take=10`));
   }, [paginationIndex]);
 
+  console.log(gifts.giftList, '233313321321313');
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
-        <CRow className="clearfix mb-3">
-          <CAccordion activeItemKey={2}>
+          <CRow className="clearfix mb-3">
+            <CAccordion activeItemKey={2}>
               {_.sortBy(
                 gifts.giftList,
                 'id',
               )?.map((item) => (
-              <GiftItem
-                key={item.id}
-                gift={item}
-                handleDeleteGift={handleDeleteGift}
-                handleOpenEditModal={handleOpenEditModal}
-              />
+                <GiftItem
+                  key={item.id}
+                  gift={item}
+                  handleDeleteGift={handleDeleteGift}
+                  handleOpenEditModal={handleOpenEditModal}
+                />
               ))}
-          </CAccordion>
+            </CAccordion>
 
-        </CRow>
-        <CButton color="info text-white" onClick={handleClick}>Add Gifts</CButton>
+          </CRow>
+          <CButton color="info text-white" onClick={handleClick}>Add Gifts</CButton>
         </CContainer>
       )}
       <EditGift
