@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   CAccordion, CButton, CContainer, CRow,
@@ -15,16 +15,16 @@ import { CircularProgress, Pagination } from '@mui/material';
 import { toast } from 'react-toastify';
 import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
 import { getPaginationIndex } from 'src/store/Slices/games';
+import Filters from 'src/components/filters';
 import GameItem from './GameItem';
 import EditKaraoke from './EditGame';
 
+const qs = require('querystringify');
+
 const Games = () => {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-
   const handleClick = () => navigate('/karaoke-game/add-karaoke-game');
-
   const games = useSelector((state) => state.karaokeGame.games);
   const loading = useSelector(karaokeLoading);
   const paginationIndex = useSelector(getPaginationIndex);
@@ -39,7 +39,7 @@ const Games = () => {
   const langInputRef = useRef(null);
   const titleInputRef = useRef(null);
   const linkInputRef = useRef(null);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleDeleteKaraoke = useCallback((id) => {
     toast.promise(
       dispatch(deleteKaraoke(id)),
@@ -56,8 +56,20 @@ const Games = () => {
     setOpenEditModal(false);
   }, []);
 
-  const handleGetGames = useCallback(() => {
-    dispatch(getKaraokeGames(`?skip=${paginationIndex * 10}&take=10`));
+  const handleGetGames = useCallback((data) => {
+    const searchObj = Object.fromEntries([...searchParams]);
+    const filterObj = {
+      category: '1',
+      ispremium: 'true',
+      visible: 'true',
+      skip: paginationIndex * 10,
+      take: 10,
+      ...searchObj,
+      ...data,
+    }
+    setSearchParams(filterObj);
+    const filterStringify = qs.stringify(filterObj, true)
+    dispatch(getKaraokeGames(filterStringify));
   }, [paginationIndex]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
@@ -105,9 +117,10 @@ const Games = () => {
   console.log(games, 'dddsas');
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-column">
+    <div className="bg-light min-vh-100 d-flex flex-column mb-3">
       {loading ? <CircularProgress /> : (
         <CContainer>
+          <Filters setFilter={(val) => { handleGetGames(val) }} />
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(games.karaokeList, 'id').map((item, index) => {

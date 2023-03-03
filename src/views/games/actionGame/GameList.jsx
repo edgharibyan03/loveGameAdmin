@@ -4,7 +4,7 @@ import {
 import React, {
   useEffect, useCallback, useState, useRef,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import { useAppDispatch } from 'src/store';
@@ -15,8 +15,11 @@ import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
 import { getPaginationIndex } from 'src/store/Slices/games';
+import Filters from 'src/components/filters';
 import GameItem from './GameItem';
 import EditActionGame from './EditGame';
+
+const qs = require('querystringify');
 
 function Games() {
   const dispatch = useAppDispatch();
@@ -24,12 +27,11 @@ function Games() {
   const navigate = useNavigate();
 
   const handleClick = () => navigate('/action-game/add-action-game');
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const games = useSelector((state) => state.actionGame.actionGames);
 
   const loading = useSelector(getLoading);
-
-  const { search } = useLocation();
 
   const isPremiumCheckboxRef = useRef(null);
   const visibleCheckboxRef = useRef(null);
@@ -99,9 +101,24 @@ function Games() {
       toastChangeBody('action game', handleCloseEditModal),
     )
   }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
-
+  const handleGetGames = useCallback((data) => {
+    const searchObj = Object.fromEntries([...searchParams]);
+    const filterObj = {
+      category: '1',
+      ispremium: 'false',
+      visible: 'true',
+      skip: paginationIndex * 10,
+      take: 10,
+      ...searchObj,
+      ...data,
+    }
+    const filterStringify = qs.stringify(filterObj, true);
+    setSearchParams(filterObj);
+    dispatch(getActionGame(filterStringify));
+  }, [paginationIndex]);
   useEffect(() => {
-    dispatch(getActionGame(`?skip=${paginationIndex * 10}&take=10`));
+    handleGetGames()
+    // dispatch(getActionGame(`?skip=${paginationIndex * 10}&take=10`));
   }, [paginationIndex]);
 
   useState(() => {
@@ -113,6 +130,7 @@ function Games() {
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
+           <Filters setFilter={(val) => { handleGetGames(val) }} />
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(

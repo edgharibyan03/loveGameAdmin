@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import {
-  CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
+  CButton, CCol, CContainer, CFormCheck, CFormInput, CFormSelect, CRow,
 } from '@coreui/react';
 import { toastAddBody } from 'src/utils/toast';
 import { toast } from 'react-toastify';
+import { getGiftsCategories } from 'src/store/Slices/giftsCotegories';
 import { createGift } from '../../../store/Slices/gifts';
 import { useAppDispatch } from '../../../store';
 
@@ -19,23 +20,26 @@ const AddGift = () => {
       dimondPrice: null,
       path: '',
       visible: true,
-      category: 1,
-      isPremium: true,
+      categoryId: null,
+      ispremium: true,
+      time: null,
+      fixedPosition: '',
+      title: '',
     },
   });
 
   const filesInputRef = useRef();
 
   const loading = useSelector((state) => state.actionGame.loading);
-
+  const giftsCotegories = useSelector((state) => state.giftsCotegories.giftCategory);
   const dispatch = useAppDispatch();
 
   const onSubmit = () => {
-    const data = getValues();
-
+    const { fixedPosition, ...data } = getValues();
+    console.log(data, 'dataaaaaaa');
     if (filesInputRef.current.files[0]) {
       toast.promise(
-        dispatch(createGift({ ...data, image: filesInputRef.current.files[0] })),
+        dispatch(createGift({ ...data, position: { fixedPosition }, image: filesInputRef.current.files[0] })),
         toastAddBody('gift'),
       )
     }
@@ -43,7 +47,9 @@ const AddGift = () => {
     // const action_cont = languages.map((lang) => ({ "language": lang, "title": lang === 'ru' ? action_ru : action_en, }));
     // dispatch(addActionGame(data));
   };
-
+  useEffect(() => {
+    dispatch(getGiftsCategories('?skip=0&take=10'));
+  }, []);
   return (
     <div className="bg-light min-vh-100 d-flex">
       <CContainer>
@@ -51,7 +57,7 @@ const AddGift = () => {
           <CCol md={6}>
             <Controller
               control={control}
-              name="category"
+              name="categoryId"
               rules={{
                 required: {
                   value: true,
@@ -59,15 +65,13 @@ const AddGift = () => {
                 },
               }}
               render={({ field }) => (
-                <CFormInput
+                <CFormSelect
+                  aria-label="Default select example"
                   onChange={(e) => field.onChange(e)}
-                  value={field.value}
-                  type="number"
-                  placeholder="Category"
-                  error={!!errors.category?.message}
-                  className="mb-1"
-                // helperText={errors.username?.message}
-                />
+                >
+                  <option>Open this select menu</option>
+                  { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))}
+                </CFormSelect>
               )}
             />
             <Controller
@@ -114,6 +118,27 @@ const AddGift = () => {
             />
             <Controller
               control={control}
+              name="time"
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Required',
+                },
+              }}
+              render={({ field }) => (
+                <CFormInput
+                  onChange={(e) => field.onChange(e)}
+                  value={field.value}
+                  type="number"
+                  placeholder="Time"
+                  error={!!errors.time?.message}
+                  className="mb-1"
+                // helperText={errors.username?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
               name="level"
               rules={{
                 required: {
@@ -135,7 +160,49 @@ const AddGift = () => {
             />
             <Controller
               control={control}
-              name="isPremium"
+              name="fixedPosition"
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Required',
+                },
+              }}
+              render={({ field }) => (
+                <CFormInput
+                  onChange={(e) => field.onChange(e)}
+                  value={field.value}
+                  type="text"
+                  placeholder="Fixed Position"
+                  error={!!errors.fixedPosition?.message}
+                  className="mb-1"
+                // helperText={errors.username?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="title"
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Required',
+                },
+              }}
+              render={({ field }) => (
+                <CFormInput
+                  onChange={(e) => field.onChange(e)}
+                  value={field.value}
+                  type="text"
+                  placeholder="Title"
+                  error={!!errors.title?.message}
+                  className="mb-1"
+                // helperText={errors.username?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="ispremium"
               render={({ field }) => (
                 <CFormCheck
                   id="flexCheckDefault"

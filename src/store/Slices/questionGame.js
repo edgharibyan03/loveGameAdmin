@@ -31,7 +31,7 @@ export const addQuestionGame = createAsyncThunk('game/addQuestionGame', async (d
 });
 
 export const getQuestionGame = createAsyncThunk('game/getQuestionGame', async (search) => {
-  const response = await API.get(`/questions/all${search}&category=null&ispremium=null&visible=null`);
+  const response = await API.get(`/questions/all${search}`);
 
   return response.data;
 });
@@ -78,7 +78,7 @@ export const editQuestion = createAsyncThunk(
 
     return response.data;
   },
-)
+);
 
 const initialState = {
   questionGames: {
@@ -115,7 +115,7 @@ export const questionGameSlice = createSlice({
         ...state.questionGames.questionList.filter((item) => item.id !== action.payload.id),
         action.payload,
       ];
-    })
+    });
   },
 
 });

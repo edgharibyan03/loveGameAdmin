@@ -20,7 +20,7 @@ export const createGift = createAsyncThunk('game/addGift', async (data) => {
     },
   });
 
-  const response = await API.post('/gift', {
+  const response = await API.post('/gift/add', {
     ...data,
     path: imageUrl.data.url,
   });
@@ -31,7 +31,7 @@ export const createGift = createAsyncThunk('game/addGift', async (data) => {
 export const getGifts = createAsyncThunk(
   'game/getGifts',
   async (search) => {
-    const response = await API.get(`/gift/all${search}&category=1&ispremium=false&visible=true`);
+    const response = await API.get(`/gift/all${search}`);
 
     return response.data;
   },
@@ -70,7 +70,7 @@ export const editGift = createAsyncThunk(
 
     return response.data;
   },
-)
+);
 
 export const giftsSlice = createSlice({
   name: 'questionGame',
@@ -86,14 +86,14 @@ export const giftsSlice = createSlice({
 
     builder.addCase(deleteGift.fulfilled, (state, action) => {
       state.gifts.giftList = state.gifts.giftList.filter((item) => item.id !== action.payload);
-    })
+    });
 
     builder.addCase(editGift.fulfilled, (state, action) => {
       state.gifts = [
         ...state.gifts.filter((item) => item.id !== action.payload.id),
         action.payload,
       ];
-    })
+    });
   },
 });
 

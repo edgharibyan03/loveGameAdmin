@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { CircularProgress } from '@mui/material';
@@ -14,8 +14,11 @@ import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
 import { useAppDispatch } from 'src/store';
 import { editActionGame } from 'src/store/Slices/actionGame';
 import _ from 'lodash';
+import Filters from 'src/components/filters';
 import EditQuestionGame from './EditGame';
 import GameItem from './GameItem';
+
+const qs = require('querystringify');
 
 const Games = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +28,7 @@ const Games = () => {
   const loading = useSelector(questionsLoadingStatus);
   const games = useSelector((state) => state.questionGame);
   const paginationIndex = useSelector(getPaginationIndex);
-
+  console.log(paginationIndex, 'paginationIndex in page');
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
@@ -35,7 +38,7 @@ const Games = () => {
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null);
   const fileInputRef = useRef(null)
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleClick = useCallback(() => navigate('/question-game/add-game'), []);
 
   const handleDeleteQuestion = useCallback((id) => {
@@ -100,15 +103,32 @@ const Games = () => {
       );
     }
   }, [currentQuestion, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, fileInputRef]);
+  const handleGetGames = useCallback((data) => {
+    console.log(paginationIndex, 'paginationIndex');
+    const searchObj = Object.fromEntries([...searchParams]);
+    const filterObj = {
+      category: '1',
+      ispremium: 'false',
+      visible: 'true',
+      skip: paginationIndex * 10,
+      take: 10,
+      ...searchObj,
+      ...data,
+    }
+    setSearchParams(filterObj);
+    const filterStringify = qs.stringify(filterObj, true);
+    dispatch(getQuestionGame(filterStringify));
+  }, [paginationIndex]);
 
   useEffect(() => {
-    dispatch(getQuestionGame(`?skip=${paginationIndex * 10}&take=10`));
+    handleGetGames()
   }, [paginationIndex]);
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
+          <Filters setFilter={(val) => { handleGetGames(val) }} />
           <CAccordion activeItemKey={2}>
             {
               _.sortBy(games.questionGames?.questionList, 'id').map((item, index) => (
