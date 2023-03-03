@@ -31,7 +31,7 @@ export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }
           <li>
             Category:
             {' '}
-            {gift.category}
+            {gift.category.category}
           </li>
           <li>
             Is premium:
