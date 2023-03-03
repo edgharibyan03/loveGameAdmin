@@ -4,7 +4,8 @@ import karaokeGame from './Slices/karaokeGame';
 import actionGame from './Slices/actionGame';
 import choiceGame from './Slices/choiceGame';
 import gifts from './Slices/gifts';
-import games from './Slices/games'
+import giftsCotegories from './Slices/giftsCotegories';
+import games from './Slices/games';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     karaokeGame,
     actionGame,
     gifts,
+    giftsCotegories,
     games,
     choiceGame,
   },

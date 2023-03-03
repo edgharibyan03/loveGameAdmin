@@ -1,7 +1,7 @@
 import React, {
   useEffect, useCallback, useState, useRef,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   CAccordion,
@@ -13,12 +13,15 @@ import {
 import { useAppDispatch } from 'src/store';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
+import Filters from 'src/components/filters';
 import { getPaginationIndex } from 'src/store/Slices/games';
 import { CircularProgress } from '@mui/material';
 import { toastDeleteBody } from 'src/utils/toast';
 import GiftItem from './GiftItem';
 import EditGift from './EditGame';
 import '../style.css'
+
+const qs = require('querystringify');
 
 function Gifts() {
   const dispatch = useAppDispatch();
@@ -27,7 +30,7 @@ function Gifts() {
   const gifts = useSelector((state) => state.gifts.gifts);
   const paginationIndex = useSelector(getPaginationIndex);
   const loading = useSelector(getLoading)
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentGiftId, setCurrentGiftId] = useState(null);
 
@@ -58,6 +61,21 @@ function Gifts() {
       toastDeleteBody('gift'),
     )
   }, []);
+  const handleGetGifts = useCallback((data) => {
+    const searchObj = Object.fromEntries([...searchParams]);
+    const filterObj = {
+      category: '1',
+      ispremium: 'true',
+      visible: 'true',
+      skip: paginationIndex * 10,
+      take: 10,
+      ...searchObj,
+      ...data,
+    }
+    setSearchParams(filterObj);
+    const filterStringify = qs.stringify(filterObj, true)
+    dispatch(getGifts(filterStringify));
+  }, [paginationIndex]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
     const currentGift = gifts.find((item) => item.id === currentGiftId);
@@ -104,15 +122,14 @@ function Gifts() {
   ]);
 
   useEffect(() => {
-    dispatch(getGifts(`?skip=${paginationIndex * 10}&take=10`));
+    handleGetGifts()
   }, [paginationIndex]);
-
-  console.log(gifts.giftList, '233313321321313');
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
+          <Filters setFilter={(val) => { handleGetGifts(val) }} />
           <CRow className="clearfix mb-3">
             <CAccordion activeItemKey={2}>
               {_.sortBy(

@@ -2,7 +2,7 @@ import React, {
   useCallback, useEffect, useState,
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CContainer, CFormCheck } from '@coreui/react';
+import { CContainer, CFormCheck, CFormInput } from '@coreui/react';
 
 // routes config
 import routes from '../routes';
@@ -25,6 +25,16 @@ const Filters = ({ setFilter }) => {
   }, []);
   return (
     <CContainer lg>
+      <CFormInput
+        onChange={(e) => {
+          handleChange({ category: e.target.value });
+        }}
+        value={data?.category}
+        type="number"
+        placeholder="Category"
+        className="mb-1"
+      // helperText={errors.username?.message}
+      />
       <CFormCheck
         id="flexCheckDefault"
         label="Is premium"

@@ -28,7 +28,7 @@ const Games = () => {
   const loading = useSelector(questionsLoadingStatus);
   const games = useSelector((state) => state.questionGame);
   const paginationIndex = useSelector(getPaginationIndex);
-
+  console.log(paginationIndex, 'paginationIndex in page');
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
@@ -104,6 +104,7 @@ const Games = () => {
     }
   }, [currentQuestion, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, fileInputRef]);
   const handleGetGames = useCallback((data) => {
+    console.log(paginationIndex, 'paginationIndex');
     const searchObj = Object.fromEntries([...searchParams]);
     const filterObj = {
       category: '1',

@@ -26,6 +26,9 @@ const Games = () => {
           <Link to="/karaoke-game" className="game-item">Karaoke</Link>
         </CListGroupItem>
         <CListGroupItem>
+          <Link to="/gift-categories" className="game-item">Gifts Categories</Link>
+        </CListGroupItem>
+        <CListGroupItem>
           <Link to="/gifts" className="game-item">Gifts</Link>
         </CListGroupItem>
           <CListGroupItem>

@@ -13,7 +13,8 @@ const AddGift = React.lazy(() => import('./views/games/gifts/AddGift'));
 const Gifts = React.lazy(() => import('./views/games/gifts/GiftsList'));
 const AddChoiceGame = React.lazy(() => import('./views/games/choiceGame/AddGame'));
 const ChoiceGame = React.lazy(() => import('./views/games/choiceGame/GameList'));
-
+const AddGiftCategory = React.lazy(() => import('./views/games/giftCategories/AddGiftCategory'));
+const GiftsCategories = React.lazy(() => import('./views/games/giftCategories/GiftsCategories'));
 const routes = [
   {
     path: '/', exact: true, name: 'Games', element: Games,
@@ -28,6 +29,9 @@ const routes = [
   { path: '/action-game/add-action-game', name: 'AddActionGame', element: AddActionGame },
   { path: '/choice-game', name: 'Choice game', element: ChoiceGame },
   { path: '/choice-game/add-choice-game', name: 'AddChoiceGame', element: AddChoiceGame },
+  { path: '/choice-game/add-choice-game', name: 'AddGiftCategory', element: AddGiftCategory },
+  { path: '/gift-categories', name: 'GiftsCategories', element: GiftsCategories },
+  { path: '/gift-categories/add-gift-category', name: 'AddGiftCategory', element: AddGiftCategory },
 ];
 
 export default routes;
