@@ -28,7 +28,6 @@ function Games() {
 
   const handleClick = () => navigate('/action-game/add-action-game');
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
   const games = useSelector((state) => state.actionGame.actionGames);
 
   const loading = useSelector(getLoading);
@@ -63,44 +62,38 @@ function Games() {
   }, []);
 
   const handleSetActions = useCallback((title, lang) => {
-    currentAction.current = currentAction.current.action.map((item) => {
-      if (item.language === lang) {
-        return {
-          language: lang,
-          title,
-        };
-      }
-      return item;
-    });
-    // setCurrentAction((prev) => ({
-    //   ...prev,
-    //   action: prev.action.map((item) => {
-    //     if (item.language === lang) {
-    //       return {
-    //         language: lang,
-    //         title,
-    //       };
-    //     }
-    //     return item;
-    //   }),
-    // }));
-  }, [currentAction]);
+    currentAction.current = {
+      ...currentAction.current,
+      action: currentAction.current.action.map((item) => {
+        if (item.language === lang) {
+          return {
+            language: lang,
+            title,
+          };
+        }
+        return item;
+      }),
+    };
+  }, [currentAction.current]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
     const category = categoryInputRef.current?.value;
     const visible = visibleCheckboxRef.current?.checked;
     const ispremium = isPremiumCheckboxRef.current?.checked;
 
+    console.log(currentAction.current, '320103210');
+
     toast.promise(
       dispatch(editActionGame({
-        ...currentAction.current,
+        action: currentAction.current.action,
         visible,
         ispremium,
         category,
+        id: currentActionId,
       })),
       toastChangeBody('action game', handleCloseEditModal),
     )
-  }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef]);
+  }, [currentAction, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, currentActionId]);
   const handleGetGames = useCallback((data) => {
     const searchObj = Object.fromEntries([...searchParams]);
     const filterObj = {

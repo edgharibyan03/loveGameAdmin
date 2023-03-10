@@ -31,6 +31,7 @@ const Games = () => {
   console.log(paginationIndex, 'paginationIndex in page');
   const [openEditModal, setOpenEditModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [changeImages, setChangeImages] = useState(false)
 
   // const currentQuestion = useRef(null)
 
@@ -151,6 +152,8 @@ const Games = () => {
         open={openEditModal}
         question={currentQuestion}
         fileInputRef={fileInputRef}
+        changeImages={changeImages}
+        setChangeImages={setChangeImages}
         handleClose={handleCloseEditModal}
         handleSetQuestions={handleSetQuestions}
         handleCloseAndUpdate={handleCloseEditModalAndUpdate}

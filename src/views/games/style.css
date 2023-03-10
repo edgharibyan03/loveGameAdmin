@@ -60,6 +60,22 @@
   width: 100% !important;
 }
 
+.questions-edit-modal-footer{
+  display: flex;
+  flex-direction: column;
+  width: 100% !important;
+}
+
+.questions-edit-modal-footer-images {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.questions-edit-modal-footer-images img{
+  width: 100px;
+  margin-right: 10px;
+}
+
 .karaoke-game-add-checkboxes > span{
   margin-right: 5px;
 }

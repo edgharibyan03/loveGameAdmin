@@ -20,8 +20,11 @@ export default function EditQuestionGame({
   handleCloseAndUpdate,
   handleSetQuestions,
   question,
+  changeImages,
+  setChangeImages,
   fileInputRef,
 }) {
+  console.log(question, 'questionquestion');
   return (
     <Dialog
       open={open}
@@ -64,7 +67,11 @@ export default function EditQuestionGame({
             <TextField inputRef={categoryInputRef} defaultValue={question?.category} id="outlined-basic" label="Category" variant="outlined" />
             <FormControlLabel inputRef={isPremiumCheckboxRef} control={<Checkbox defaultChecked={question?.ispremium} />} label="Is Premium" />
             <FormControlLabel inputRef={visibleCheckboxRef} control={<Checkbox defaultChecked={question?.visible} />} label="Visible" />
-            <input multiple ref={fileInputRef} type="file" />
+            <FormControlLabel onChange={(e) => setChangeImages(e.target.checked)} control={<Checkbox />} label="Change images" />
+            <div className="questions-edit-modal-footer-images">
+              {question?.question[0]?.images?.map((item) => <img src={item} alt="questions-edit-modal-footer-images" />)}
+            </div>
+            <input disabled={!changeImages} multiple ref={fileInputRef} type="file" />
           </div>
         </Box>
       </DialogContent>
