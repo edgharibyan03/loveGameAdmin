@@ -30,10 +30,10 @@ const Games = () => {
   const paginationIndex = useSelector(getPaginationIndex);
   console.log(paginationIndex, 'paginationIndex in page');
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(null);
+  // const [currentQuestion, setCurrentQuestion] = useState(null);
   const [changeImages, setChangeImages] = useState(false)
 
-  // const currentQuestion = useRef(null)
+  const currentQuestion = useRef(null)
 
   const isPremiumCheckboxRef = useRef(null);
   const visibleCheckboxRef = useRef(null);
@@ -50,38 +50,39 @@ const Games = () => {
   }, []);
 
   const handleOpenEditModal = useCallback((id) => {
-    // currentQuestion.current = games.questionGames?.questionList.find((item) => item.id === id)
-    setCurrentQuestion(games.questionGames?.questionList.find((item) => item.id === id))
+    currentQuestion.current = games.questionGames?.questionList.find((item) => item.id === id)
     setOpenEditModal(true);
-  }, [games]);
+  }, [currentQuestion, games]);
 
   const handleCloseEditModal = useCallback(() => {
     setOpenEditModal(false);
   }, []);
 
   const handleSetQuestions = useCallback((question, lang) => {
-    // currentQuestion.current.question = prev.question.map((item) => {
-    //   if (item.language === lang) {
-    //     return {
-    //       language: lang,
-    //       question,
-    //     };
-    //   }
-    //   return item;
-    // }),
-    setCurrentQuestion((prev) => ({
-      ...prev,
-      question: prev.question.map((item) => {
-        if (item.language === lang) {
-          return {
-            language: lang,
-            question,
-          };
-        }
-        return item;
-      }),
-    }));
-  }, []);
+    console.log(currentQuestion, '3219392193912');
+    currentQuestion.current.question = currentQuestion.current.question.map((item) => {
+      if (item.language === lang) {
+        return {
+          language: lang,
+          question,
+        };
+      }
+      return item;
+    })
+    const question = 
+    // setCurrentQuestion((prev) => ({
+    //   ...prev,
+    //   question: prev.question.map((item) => {
+    //     if (item.language === lang) {
+    //       return {
+    //         language: lang,
+    //         question,
+    //       };
+    //     }
+    //     return item;
+    //   }),
+    // }));
+  }, [currentQuestion]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
     const category = categoryInputRef.current?.value;
@@ -94,11 +95,12 @@ const Games = () => {
     } else {
       toast.promise(
         dispatch(editQuestion({
-          ...currentQuestion,
+          question: currentQuestion.current.question,
           visible,
           ispremium,
           category,
-          files,
+          // files,
+          id: currentQuestion.current.id,
         })),
         toastChangeBody('action game', handleCloseEditModal),
       );
@@ -113,8 +115,6 @@ const Games = () => {
       visible: 'true',
       skip: paginationIndex * 10,
       take: 10,
-      ...searchObj,
-      ...data,
     }
     setSearchParams(filterObj);
     const filterStringify = qs.stringify(filterObj, true);
@@ -150,7 +150,7 @@ const Games = () => {
         visibleCheckboxRef={visibleCheckboxRef}
         categoryInputRef={categoryInputRef}
         open={openEditModal}
-        question={currentQuestion}
+        question={currentQuestion.current}
         fileInputRef={fileInputRef}
         changeImages={changeImages}
         setChangeImages={setChangeImages}

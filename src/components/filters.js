@@ -19,10 +19,13 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
 
   const filter = Object.fromEntries([...searchParams]);
 
+  console.log(filter, 'filter22');
+
   const handleChange = useCallback((val) => {
-    setSearchParams({ ...data, ...val });
+    console.log(data, val, '302103100312');
+    // setSearchParams({ ...data, ...val });
     setFilter({ ...data, ...val });
-    setData({ ...filter });
+    setData((prev) => ({ ...prev, ...val }));
   }, [data]);
 
   useEffect(() => {
@@ -64,10 +67,9 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
         label="Is premium"
         value={data?.ispremium}
         checked={data?.ispremium === 'true'}
-        onChange={() => {
-          console.log('in onChange');
-          const ispremium = !!(data && data.ispremium === 'false');
-          handleChange({ ispremium });
+        onChange={(e) => {
+          console.log(e.target.checked, data?.ispremium, 'in onChange');
+          handleChange({ ispremium: e.target.checked });
         }}
       />
       <CFormCheck
@@ -75,10 +77,9 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
         label="Visible"
         value={data?.visible}
         checked={data?.visible === 'true'}
-        onChange={() => {
+        onChange={(e) => {
           console.log('in onChange');
-          const visible = !!(data && data.visible === 'false');
-          handleChange({ visible });
+          handleChange({ visible: e.target.checked });
         }}
       />
       {/* <CFormSelect

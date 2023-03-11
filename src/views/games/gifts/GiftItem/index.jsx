@@ -2,7 +2,7 @@ import { CAccordionBody, CAccordionHeader, CAccordionItem } from '@coreui/react'
 import React from 'react';
 
 export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }) {
-  console.log(gift, '2');
+  console.log(gift?.position?.fixedPosition || gift?.position, '2');
   return (
     <CAccordionItem itemKey={Math.random()} className="questions-item">
       <CAccordionHeader>
@@ -46,7 +46,7 @@ export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }
           <li>
             Position:
             {' '}
-            {gift.position}
+            {gift?.position?.fixedPosition || gift?.position}
           </li>
           <li>
             Is premium:

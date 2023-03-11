@@ -58,14 +58,13 @@ const Games = () => {
 
   const handleGetGames = useCallback((data) => {
     const searchObj = Object.fromEntries([...searchParams]);
+    console.log(paginationIndex, 'paginationIndexpaginationIndex');
     const filterObj = {
       category: '1',
       ispremium: 'true',
       visible: 'true',
       skip: paginationIndex * 10,
       take: 10,
-      ...searchObj,
-      ...data,
     }
     setSearchParams(filterObj);
     const filterStringify = qs.stringify(filterObj, true)
