@@ -7,7 +7,6 @@ import '../../style.css';
 const GameItem = ({
   question, handleDeleteQuestion, handleOpenEditModal,
 }) => {
-  console.log(question, 'question');
   return (
     <div className="mb-3">
       <CAccordionItem itemKey={Math.random()} className="questions-item">

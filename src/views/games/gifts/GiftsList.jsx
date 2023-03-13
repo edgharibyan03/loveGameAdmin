@@ -70,10 +70,9 @@ function Gifts() {
 
   const handleGetGifts = useCallback((data) => {
     const searchObj = Object.fromEntries([...searchParams]);
-    setCurrentCategory(giftsCotegories?.categoryList?.find((item) => item.id === +(data?.category || 0)));
-    console.log(giftsCotegories?.categoryList?.find((item) => item.id === +(data?.category || 0)), 'data');
+    setCurrentCategory(giftsCotegories?.categoryList?.find((item) => item.id === +(data?.category || searchObj.category)) || { id: 'null', category: { title: 'Не выбрано' } });
     const filterObj = {
-      category: '1',
+      category: 'null',
       ispremium: 'true',
       visible: 'true',
       skip: paginationIndex * 10,
@@ -87,7 +86,6 @@ function Gifts() {
   }, [paginationIndex, giftsCotegories]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
-    console.log(gifts, 'gifts');
     const currentGift = gifts.giftList.find((item) => item.id === currentGiftId);
 
     const level = levelInputRef.current.value;
@@ -100,8 +98,6 @@ function Gifts() {
     const title = titleInputRef.current.value;
     const position = positionInputRef.current.value;
     const time = timeInputRef.current.value || null;
-
-    console.log(giftsCotegories.categoryList.find((item) => +item.id === +category), '3030030320130210321');
 
     toast.promise(
       dispatch(editGift({
@@ -147,14 +143,12 @@ function Gifts() {
     handleGetGifts()
   }, [paginationIndex]);
 
-  console.log(currentCategory, 'currentCategorycurrentCategorycurrentCategory');
-
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
           <Filters
-            filters={giftsCotegories?.categoryList || []}
+            filters={[{ id: 'null', category: { title: 'Не выбрано' } }, ...(giftsCotegories?.categoryList || [])] || []}
             currentCategory={currentCategory}
             setFilter={(val) => { handleGetGifts(val); }}
           />

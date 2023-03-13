@@ -19,7 +19,7 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
 
   const filter = Object.fromEntries([...searchParams]);
 
-  console.log(filter, 'filter22');
+  console.log(filters, 'filter22');
 
   const handleChange = useCallback((val) => {
     console.log(data, val, '302103100312');
@@ -46,14 +46,13 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
           }}
           value={currentCategory?.id}
         >
-          {/* { giftsCotegories?.categoryList?.map((cotegory, ind) => (<option key={ind} value={+cotegory.id}>{cotegory.title}</option>))} */}
           {filters?.map && filters.map((category, ind) => {
             console.log(category, 'categoryItem');
             return (
               category.category && (
                 <option
                   key={ind}
-                  value={+category.id}
+                  value={category.id}
                 >
                   {category.category.title}
                 </option>

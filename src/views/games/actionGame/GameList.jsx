@@ -100,10 +100,10 @@ function Games() {
       category: '1',
       ispremium: 'false',
       visible: 'true',
-      skip: paginationIndex * 10,
-      take: 10,
       ...searchObj,
       ...data,
+      skip: paginationIndex * 10,
+      take: 10,
     }
     const filterStringify = qs.stringify(filterObj, true);
     setSearchParams(filterObj);

@@ -61,8 +61,10 @@ const Games = () => {
     console.log(paginationIndex, 'paginationIndexpaginationIndex');
     const filterObj = {
       category: '1',
-      ispremium: 'true',
+      ispremium: 'false',
       visible: 'true',
+      ...searchObj,
+      ...data,
       skip: paginationIndex * 10,
       take: 10,
     }

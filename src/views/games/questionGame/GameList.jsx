@@ -59,29 +59,20 @@ const Games = () => {
   }, []);
 
   const handleSetQuestions = useCallback((question, lang) => {
-    console.log(currentQuestion, '3219392193912');
-    currentQuestion.current.question = currentQuestion.current.question.map((item) => {
+    const newQuestion = currentQuestion.current.question.map((item) => {
       if (item.language === lang) {
         return {
           language: lang,
           question,
+          images: item.images,
         };
       }
       return item;
     })
-    const question = 
-    // setCurrentQuestion((prev) => ({
-    //   ...prev,
-    //   question: prev.question.map((item) => {
-    //     if (item.language === lang) {
-    //       return {
-    //         language: lang,
-    //         question,
-    //       };
-    //     }
-    //     return item;
-    //   }),
-    // }));
+    currentQuestion.current = {
+      ...currentQuestion.current,
+      question: newQuestion,
+    }
   }, [currentQuestion]);
 
   const handleCloseEditModalAndUpdate = useCallback(() => {
@@ -90,7 +81,7 @@ const Games = () => {
     const ispremium = isPremiumCheckboxRef.current?.checked;
     const { files } = fileInputRef.current;
 
-    if (files.length < 3 && files.length !== 0) {
+    if (files.length < 3 && files.length !== 0 && changeImages) {
       toast.warn('Images count should be 3');
     } else {
       toast.promise(
@@ -99,20 +90,21 @@ const Games = () => {
           visible,
           ispremium,
           category,
-          // files,
+          files,
           id: currentQuestion.current.id,
         })),
         toastChangeBody('action game', handleCloseEditModal),
       );
     }
-  }, [currentQuestion, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, fileInputRef]);
+  }, [currentQuestion, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, fileInputRef, changeImages]);
   const handleGetGames = useCallback((data) => {
-    console.log(paginationIndex, 'paginationIndex');
     const searchObj = Object.fromEntries([...searchParams]);
     const filterObj = {
       category: '1',
       ispremium: 'false',
       visible: 'true',
+      ...searchObj,
+      ...data,
       skip: paginationIndex * 10,
       take: 10,
     }
