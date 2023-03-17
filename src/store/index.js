@@ -6,6 +6,7 @@ import choiceGame from './Slices/choiceGame';
 import gifts from './Slices/gifts';
 import giftsCotegories from './Slices/giftsCotegories';
 import games from './Slices/games';
+import users from './Slices/users';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     giftsCotegories,
     games,
     choiceGame,
+    users,
   },
 });
 

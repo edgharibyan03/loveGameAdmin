@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
 import { useAppDispatch } from 'src/store';
 import { changePaginationIndex } from 'src/store/Slices/games';
+import { getUsersInfo } from 'src/store/Slices/users';
 import routes from '../routes';
 
 const AppBreadcrumb = () => {
@@ -12,6 +13,7 @@ const AppBreadcrumb = () => {
   const gifts = useSelector((state) => state.gifts.gifts);
   const questionGames = useSelector((state) => state.questionGame);
   const choiceGames = useSelector((state) => state.choiceGame);
+  const users = useSelector(getUsersInfo);
 
   const currentLocation = useLocation().pathname;
 
@@ -32,6 +34,10 @@ const AppBreadcrumb = () => {
     }
     if (currentLocation.includes('choice-game')) {
       return choiceGames?.choices;
+    }
+    if (currentLocation.includes('users')) {
+      console.log(users, '3203021030210120021030120021');
+      return users;
     }
 
     return [];

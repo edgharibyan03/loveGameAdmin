@@ -3,6 +3,7 @@ import React from 'react';
 // import Gifts from './views/games/gifts/GiftsList';
 
 const Games = React.lazy(() => import('./views/games/Games'));
+const Users = React.lazy(() => import('./views/users'));
 const QuestionGame = React.lazy(() => import('./views/games/questionGame/GameList'));
 const AddQuestionGame = React.lazy(() => import('./views/games/questionGame/AddGame'));
 const KaraokeGame = React.lazy(() => import('./views/games/karaokeGame/GameList'));
@@ -17,7 +18,14 @@ const AddGiftCategory = React.lazy(() => import('./views/games/giftCategories/Ad
 const GiftsCategories = React.lazy(() => import('./views/games/giftCategories/GiftsCategories'));
 const routes = [
   {
-    path: '/', exact: true, name: 'Games', element: Games,
+    path: '/', exact: true, name: '', element: 'div',
+    // path: '/', exact: true, name: '', element: Games,
+  },
+  {
+    path: '/games', exact: true, name: 'Games', element: Games,
+  },
+  {
+    path: '/users', exact: true, name: 'Users', element: Users,
   },
   { path: '/question-game', name: 'QuestionGame', element: QuestionGame },
   { path: '/action-game', name: 'ActionGame', element: ActionGame },

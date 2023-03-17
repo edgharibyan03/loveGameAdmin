@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   CAccordion, CButton, CContainer, CRow,
@@ -11,7 +11,7 @@ import {
   deleteKaraoke, editKaraoke, getKaraokeGames, karaokeLoading,
 } from 'src/store/Slices/karaokeGame';
 import { useAppDispatch } from 'src/store';
-import { CircularProgress, Pagination } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import { toastChangeBody, toastDeleteBody } from 'src/utils/toast';
 import { getPaginationIndex } from 'src/store/Slices/games';
