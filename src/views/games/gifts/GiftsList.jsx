@@ -75,10 +75,10 @@ function Gifts() {
       category: 'null',
       ispremium: 'true',
       visible: 'true',
-      skip: paginationIndex * 10,
-      take: 10,
       ...searchObj,
       ...data,
+      skip: paginationIndex * 10,
+      take: 10,
     }
     setSearchParams(filterObj);
     const filterStringify = qs.stringify(filterObj, true)

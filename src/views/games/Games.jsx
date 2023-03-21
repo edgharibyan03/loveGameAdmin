@@ -8,10 +8,6 @@ import { changePaginationIndex } from 'src/store/Slices/games';
 const Games = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(changePaginationIndex(0));
-  }, []);
-
   return (
     <div className="bg-light min-vh-100 d-flex flex-row">
     <CContainer>

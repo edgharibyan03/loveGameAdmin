@@ -28,10 +28,10 @@ const Games = () => {
   const loading = useSelector(questionsLoadingStatus);
   const games = useSelector((state) => state.questionGame);
   const paginationIndex = useSelector(getPaginationIndex);
-  console.log(paginationIndex, 'paginationIndex in page');
+
   const [openEditModal, setOpenEditModal] = useState(false);
-  // const [currentQuestion, setCurrentQuestion] = useState(null);
   const [changeImages, setChangeImages] = useState(false)
+  const [currentCategory, setCurrentCategory] = useState(1)
 
   const currentQuestion = useRef(null)
 
@@ -39,7 +39,9 @@ const Games = () => {
   const visibleCheckboxRef = useRef(null);
   const categoryInputRef = useRef(null);
   const fileInputRef = useRef(null)
+
   const [searchParams, setSearchParams] = useSearchParams();
+
   const handleClick = useCallback(() => navigate('/question-game/add-game'), []);
 
   const handleDeleteQuestion = useCallback((id) => {
@@ -110,6 +112,7 @@ const Games = () => {
     }
     setSearchParams(filterObj);
     const filterStringify = qs.stringify(filterObj, true);
+    setCurrentCategory(filterObj.category)
     dispatch(getQuestionGame(filterStringify));
   }, [paginationIndex]);
 
@@ -121,7 +124,11 @@ const Games = () => {
     <div className="bg-light min-vh-100 d-flex flex-column">
       {loading ? <CircularProgress /> : (
         <CContainer>
-          <Filters setFilter={(val) => { handleGetGames(val) }} />
+          <Filters
+          setFilter={(val) => { handleGetGames(val) }}
+          questionGameCategories={[1, 2, 3]}
+          currentCategory={currentCategory}
+          />
           <CAccordion activeItemKey={2}>
             {
               _.sortBy(games.questionGames?.questionList, 'id').map((item, index) => (

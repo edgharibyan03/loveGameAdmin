@@ -8,10 +8,14 @@ import {
 
 // routes config
 import { getGiftsCategories } from 'src/store/Slices/giftsCotegories';
-import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'src/store';
 
-const Filters = ({ setFilter, currentCategory, filters }) => {
+const Filters = ({
+  setFilter,
+  currentCategory,
+  filters,
+  questionGameCategories,
+}) => {
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState(null);
@@ -19,11 +23,7 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
 
   const filter = Object.fromEntries([...searchParams]);
 
-  console.log(filters, 'filter22');
-
   const handleChange = useCallback((val) => {
-    console.log(data, val, '302103100312');
-    // setSearchParams({ ...data, ...val });
     setFilter({ ...data, ...val });
     setData((prev) => ({ ...prev, ...val }));
   }, [data]);
@@ -33,21 +33,25 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
     dispatch(getGiftsCategories('?skip=0&take=1000'));
   }, []);
 
-  console.log(currentCategory, 'giftsCotegoriesgiftsCotegoriesgiftsCotegoriesgiftsCotegoriesgiftsCotegories');
-
   return (
-    <CContainer lg>
+    <CContainer
+lg
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: 'calc(fit-content + 30px)',
+        marginBottom: '10px',
+      }}
+    >
       {filters && (
         <CFormSelect
           aria-label="Default select example"
           onChange={(e) => {
-            console.log(e.target.value, '3-123-21-3-213-1');
             handleChange({ category: e.target.value });
           }}
           value={currentCategory?.id}
         >
           {filters?.map && filters.map((category, ind) => {
-            console.log(category, 'categoryItem');
             return (
               category.category && (
                 <option
@@ -61,7 +65,36 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
           })}
         </CFormSelect>
       )}
-      <CFormCheck
+      {questionGameCategories && (
+        <CFormSelect
+          aria-label="Default select example"
+          style={{
+            width: 100,
+          }}
+          onChange={(e) => {
+            handleChange({ category: e.target.value });
+          }}
+          value={currentCategory}
+        >
+          {questionGameCategories?.map && questionGameCategories.map((category, ind) => {
+            console.log(category, 'categoryItem');
+            return (
+              <option
+                key={ind}
+                value={category}
+              >
+                {category}
+              </option>
+            );
+          })}
+        </CFormSelect>
+      )}
+      <div
+        style={{
+          margin: '0 10px',
+        }}
+      >
+        <CFormCheck
         id="flexCheckDefault"
         label="Is premium"
         value={data?.ispremium}
@@ -71,6 +104,7 @@ const Filters = ({ setFilter, currentCategory, filters }) => {
           handleChange({ ispremium: e.target.checked });
         }}
       />
+      </div>
       <CFormCheck
         id="flexCheckDefault1"
         label="Visible"

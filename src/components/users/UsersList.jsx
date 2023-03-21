@@ -100,10 +100,12 @@ export default function UsersList({ list }) {
         <DialogContent>
           <TextField
             id="outlined-basic"
-            label="Outlined"
+            label="Money"
             variant="outlined"
+            type="number"
             inputRef={moneyInputRef}
             style={{ marginTop: '10px', marginBottom: '20px' }}
+            sx={{ width: '100%' }}
           />
           <Autocomplete
             disablePortal
@@ -112,7 +114,7 @@ export default function UsersList({ list }) {
             defaultValue={currencies[0]}
             onChange={(_, value) => setCurrency(value)}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Movie" />}
+            renderInput={(params) => <TextField {...params} label="Currency" />}
           />
         </DialogContent>
         <DialogActions>
