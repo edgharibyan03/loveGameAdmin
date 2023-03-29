@@ -1,5 +1,6 @@
 import React, {
   useCallback, useEffect, useState,
+  useRef,
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -15,11 +16,14 @@ const Filters = ({
   currentCategory,
   filters,
   questionGameCategories,
+  search,
 }) => {
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const timeoutRef = useRef(null)
 
   const filter = Object.fromEntries([...searchParams]);
 
@@ -35,7 +39,7 @@ const Filters = ({
 
   return (
     <CContainer
-lg
+      lg
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -77,7 +81,6 @@ lg
           value={currentCategory}
         >
           {questionGameCategories?.map && questionGameCategories.map((category, ind) => {
-            console.log(category, 'categoryItem');
             return (
               <option
                 key={ind}
@@ -95,15 +98,15 @@ lg
         }}
       >
         <CFormCheck
-        id="flexCheckDefault"
-        label="Is premium"
-        value={data?.ispremium}
-        checked={data?.ispremium === 'true'}
-        onChange={(e) => {
-          console.log(e.target.checked, data?.ispremium, 'in onChange');
-          handleChange({ ispremium: e.target.checked });
-        }}
-      />
+          id="flexCheckDefault"
+          label="Is premium"
+          value={data?.ispremium}
+          checked={data?.ispremium === 'true'}
+          onChange={(e) => {
+            console.log(e.target.checked, data?.ispremium, 'in onChange');
+            handleChange({ ispremium: e.target.checked });
+          }}
+        />
       </div>
       <CFormCheck
         id="flexCheckDefault1"
@@ -115,6 +118,26 @@ lg
           handleChange({ visible: e.target.checked });
         }}
       />
+      {search && (
+        <CFormInput
+          type="text"
+          id="exampleFormControlInput1"
+          className="search-input"
+          placeholder="Search..."
+          defaultValue={data?.title}
+          style={{
+            width: '200px',
+            marginLeft: 'auto',
+          }}
+          onChange={(e) => {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(() => {
+              handleChange({ title: e.target.value });
+            }, 500);
+          }}
+          aria-describedby="exampleFormControlInputHelpInline"
+        />
+      )}
       {/* <CFormSelect
         onChange={(e) => handleChange({ category: e.target.value })}
         aria-label="Category"

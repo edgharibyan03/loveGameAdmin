@@ -101,10 +101,12 @@ const Games = () => {
   }, [currentQuestion, categoryInputRef, visibleCheckboxRef, isPremiumCheckboxRef, fileInputRef, changeImages]);
   const handleGetGames = useCallback((data) => {
     const searchObj = Object.fromEntries([...searchParams]);
+    console.log(data, 'data32');
     const filterObj = {
       category: '1',
       ispremium: 'false',
       visible: 'true',
+      title: '',
       ...searchObj,
       ...data,
       skip: paginationIndex * 10,
@@ -127,7 +129,8 @@ const Games = () => {
           <Filters
           setFilter={(val) => { handleGetGames(val) }}
           questionGameCategories={[1, 2, 3]}
-          currentCategory={currentCategory}
+            currentCategory={currentCategory}
+            search
           />
           <CAccordion activeItemKey={2}>
             {

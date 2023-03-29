@@ -1,7 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
-  CButton, CCol, CContainer, CFormCheck, CFormInput, CRow,
+  CButton, CCol, CContainer, CFormCheck, CFormInput, CFormSelect, CRow,
 } from '@coreui/react';
 import React, { useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -31,10 +31,10 @@ const Games = () => {
       const data = getValues();
       const { ...rest } = data;
       const question_cont = languages.map((lang) => {
-        return { language: lang, question: data['question_' + lang] }
+        return { language: lang, question: data['question_' + lang] };
       });
       console.log(question_cont);
-      // const question_cont = languages.map((lang) => ({ language: lang, question: lang === 'ru' ? question_ru : question_en }));
+
       toast.promise(
         dispatch(addQuestionGame({
           ...rest,
@@ -43,7 +43,7 @@ const Games = () => {
           images: filesInputRef.current.files,
         })).then((response) => console.log(response, 'respondddassas')).catch((err) => console.log(err, 'errsadasd')),
         toastAddBody('question'),
-      )
+      );
     } else {
       toast.warn('Images count should be 3');
     }
@@ -76,6 +76,34 @@ const Games = () => {
                 )}
               />
             ))}
+            <Controller
+              control={control}
+              name="category"
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Պարտադիր է',
+                },
+              }}
+              render={({ field }) => (
+                <CFormSelect
+                  aria-label="Default select example"
+                  onChange={field.onChange}
+                  value={field.value}
+                >
+                  {[1, 2, 3].map((category) => {
+                    return (
+                      <option
+                        // key={ind}
+                        value={category}
+                      >
+                        {category}
+                      </option>
+                    );
+                  })}
+                </CFormSelect>
+              )}
+            />
             <Controller
               control={control}
               name="ispremium"
