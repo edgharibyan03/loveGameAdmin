@@ -129,8 +129,9 @@ const Filters = ({
             width: '200px',
             marginLeft: 'auto',
           }}
-          onChange={(e) => {
+          onInput={(e) => {
             clearTimeout(timeoutRef.current);
+            console.log(e.target.value, '3201301203201302103012');
             timeoutRef.current = setTimeout(() => {
               handleChange({ title: e.target.value });
             }, 500);
