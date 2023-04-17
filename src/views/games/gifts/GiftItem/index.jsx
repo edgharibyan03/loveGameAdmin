@@ -9,6 +9,12 @@ export default function GiftItem({ gift, handleDeleteGift, handleOpenEditModal }
         <span>
           Gift №
           {gift.id}
+          {' - '}
+        </span>
+        <span style={{
+          marginLeft: '5px',
+        }}>
+          {gift.title}
         </span>
       </CAccordionHeader>
       <CAccordionBody className="questions-item-body">

@@ -7,6 +7,7 @@ import gifts from './Slices/gifts';
 import giftsCotegories from './Slices/giftsCotegories';
 import games from './Slices/games';
 import users from './Slices/users';
+import rate from './Slices/rate';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     games,
     choiceGame,
     users,
+    rate,
   },
 });
 
