@@ -38,7 +38,7 @@ export default function Users() {
 
   useEffect(() => {
     handleGetUsers(0);
-  }, []);
+  }, [paginationIndex]);
 
   useEffect(() => {
     dispatch(changePaginationIndex(0));

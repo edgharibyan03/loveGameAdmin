@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
 import { useAppDispatch } from 'src/store';
-import { changePaginationIndex } from 'src/store/Slices/games';
+import { changePaginationIndex, getPaginationIndex } from 'src/store/Slices/games';
 import { getUsersInfo } from 'src/store/Slices/users';
 import routes from '../routes';
 
@@ -14,6 +14,7 @@ const AppBreadcrumb = () => {
   const questionGames = useSelector((state) => state.questionGame);
   const choiceGames = useSelector((state) => state.choiceGame);
   const users = useSelector(getUsersInfo);
+  const paginationIndex = useSelector(getPaginationIndex);
 
   const currentLocation = useLocation().pathname;
 
@@ -41,7 +42,7 @@ const AppBreadcrumb = () => {
     }
 
     return [];
-  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames, choiceGames]);
+  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames, choiceGames, users]);
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname);
@@ -70,6 +71,8 @@ const AppBreadcrumb = () => {
 
   const breadcrumbs = getBreadcrumbs(currentLocation);
 
+  console.log(games, 'games2223121');
+
   return (
     <div className="d-flex w-100 justify-content-between">
       <div className="d-flex">
@@ -83,7 +86,9 @@ const AppBreadcrumb = () => {
       {games && games.count > 0 && (
         <Pagination
           onChange={(_, page) => handleChangePaginationIndex(page - 1)}
-          count={Math.ceil((games?.count || 0) / 10)} />
+          count={Math.ceil((games?.count || 0) / 10)}
+          page={paginationIndex + 1}
+        />
       )}
     </div>
   );

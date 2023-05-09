@@ -1,5 +1,6 @@
 import React from 'react';
 import Reports from './views/reports';
+import Rate from './views/games/rate/RateList';
 // import AddGift from './views/games/gifts/AddGift';
 // import Gifts from './views/games/gifts/GiftsList';
 
@@ -44,6 +45,7 @@ const routes = [
   { path: '/choice-game/add-choice-game', name: 'AddGiftCategory', element: AddGiftCategory },
   { path: '/gift-categories', name: 'GiftsCategories', element: GiftsCategories },
   { path: '/gift-categories/add-gift-category', name: 'AddGiftCategory', element: AddGiftCategory },
+  { path: '/rates', name: 'Rates', element: Rate },
 ];
 
 export default routes;
