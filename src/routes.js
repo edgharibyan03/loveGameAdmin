@@ -1,4 +1,5 @@
 import React from 'react';
+import Reports from './views/reports';
 // import AddGift from './views/games/gifts/AddGift';
 // import Gifts from './views/games/gifts/GiftsList';
 
@@ -26,6 +27,9 @@ const routes = [
   },
   {
     path: '/users', exact: true, name: 'Users', element: Users,
+  },
+  {
+    path: '/reports', exact: true, name: 'Reports', element: Reports,
   },
   { path: '/question-game', name: 'QuestionGame', element: QuestionGame },
   { path: '/action-game', name: 'ActionGame', element: ActionGame },

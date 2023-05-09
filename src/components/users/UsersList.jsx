@@ -1,13 +1,12 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import DialogContentText from '@mui/material/DialogContentText';
+import { toast } from 'react-toastify';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { Autocomplete, TextField } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import { toast } from 'react-toastify';
 import { createTransaction } from 'src/store/Slices/users';
 import UsersItem from './UsersItem';
 import './style.css';
@@ -27,12 +26,10 @@ export default function UsersList({ list }) {
   const dispatch = useDispatch();
 
   const [currentUserId, setCurrentUserId] = useState(null);
-  const [open, setOpen] = useState(false);
   const [currency, setCurrency] = useState(currencies[0]);
+  const [open, setOpen] = useState(false);
 
   const moneyInputRef = useRef(null);
-
-  console.log(currency, 'currentUserId');
 
   const handleClickOpen = () => {
     setOpen(true);

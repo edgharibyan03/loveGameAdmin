@@ -4,6 +4,10 @@ import API from 'src/services/Api';
 
 const initialState = {
   users: [],
+  reports: {
+    status: 'loading',
+    list: [],
+  },
 };
 
 export const getUsers = createAsyncThunk(
@@ -24,6 +28,15 @@ export const createTransaction = createAsyncThunk(
   },
 );
 
+export const getReports = createAsyncThunk(
+  'users/createTransaction',
+  async (search) => {
+    const response = await API.get(`/report${search}`);
+
+    return response.data;
+  },
+);
+
 export const usersSlice = createSlice({
   name: 'usersSlice',
   initialState,
@@ -38,9 +51,17 @@ export const usersSlice = createSlice({
     builder.addCase(createTransaction.fulfilled, () => {
       toast.success('Money was successfully added');
     });
+
+    builder.addCase(getReports.pending, (state) => {
+      toast.success('Money not added');
+    });
+    builder.addCase(getReports.fulfilled, (state, action) => {
+      toast.success('Money was successfully added');
+    });
   },
 });
 
 export const getUsersInfo = (state) => state.users.users;
+export const getReportsInfo = (state) => state.users.reports;
 
 export default usersSlice.reducer;
