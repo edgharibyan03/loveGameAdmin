@@ -58,7 +58,7 @@ export default function EditGift({
           autoComplete="off"
         >
           <div className="karaoke-edit-modal-cont-inputs">
-            <TextField defaultValue={gift?.title} inputRef={titleInputRef} id="outlined-basic" label="Diamond Price" variant="outlined" />
+            <TextField defaultValue={gift?.title} inputRef={titleInputRef} id="outlined-basic" label="Title" variant="outlined" />
             <TextField defaultValue={gift?.dimondPrice} inputRef={diamondPriceInputRef} id="outlined-basic" label="Diamond Price" variant="outlined" />
             <TextField defaultValue={gift?.goldPrice} inputRef={goldPriceInputRef} id="outlined-basic" label="Gold Price" variant="outlined" />
             <TextField defaultValue={gift?.level} inputRef={levelInputRef} id="outlined-basic" label="Level" variant="outlined" />

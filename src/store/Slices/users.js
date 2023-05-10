@@ -18,7 +18,7 @@ export const getUsers = createAsyncThunk(
 export const createTransaction = createAsyncThunk(
   'users/createTransaction',
   async (data) => {
-    const response = await API.post('/user/mony-transaction', data);
+    const response = await API.post('/user/money-transaction', data);
 
     return response.data;
   },
@@ -33,7 +33,7 @@ export const usersSlice = createSlice({
     });
 
     builder.addCase(createTransaction.rejected, () => {
-      toast.success('Money not added');
+      toast.error('Money not added');
     });
     builder.addCase(createTransaction.fulfilled, () => {
       toast.success('Money was successfully added');
