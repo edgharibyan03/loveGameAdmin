@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
 import { useAppDispatch } from 'src/store';
 import { changePaginationIndex, getPaginationIndex } from 'src/store/Slices/games';
-import { getUsersInfo } from 'src/store/Slices/users';
+import { getReportsInfo, getUsersInfo } from 'src/store/Slices/users';
 import routes from '../routes';
 
 const AppBreadcrumb = () => {
@@ -13,8 +13,11 @@ const AppBreadcrumb = () => {
   const gifts = useSelector((state) => state.gifts.gifts);
   const questionGames = useSelector((state) => state.questionGame);
   const choiceGames = useSelector((state) => state.choiceGame);
+  const reports = useSelector(getReportsInfo)
   const users = useSelector(getUsersInfo);
   const paginationIndex = useSelector(getPaginationIndex);
+
+  console.log(reports, 'reports321321');
 
   const currentLocation = useLocation().pathname;
 
@@ -40,9 +43,12 @@ const AppBreadcrumb = () => {
       console.log(users, '3203021030210120021030120021');
       return users;
     }
+    if (currentLocation.includes('report')) {
+      return reports.list;
+    }
 
     return [];
-  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames, choiceGames, users]);
+  }, [currentLocation, karaokeGames, actionGames, gifts, questionGames, choiceGames, users, reports]);
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname);

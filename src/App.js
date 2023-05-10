@@ -5,6 +5,11 @@ import {
 import { ToastContainer } from 'react-toastify';
 import './scss/style.scss';
 
+import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
+
+dayjs.locale('ru')
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse" />

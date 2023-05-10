@@ -29,13 +29,26 @@ export const createTransaction = createAsyncThunk(
 );
 
 export const getReports = createAsyncThunk(
-  'users/createTransaction',
+  'users/getReports',
   async (search) => {
     const response = await API.get(`/report${search}`);
 
     return response.data;
   },
 );
+
+export const setReportViewed = createAsyncThunk(
+  '/users/setReportViewed',
+  async ({ reportId, cb }) => {
+    const response = await API.post('report/viewed', {
+      reportId,
+    });
+
+    cb();
+
+    return response.data;
+  },
+)
 
 export const usersSlice = createSlice({
   name: 'usersSlice',
@@ -52,11 +65,15 @@ export const usersSlice = createSlice({
       toast.success('Money was successfully added');
     });
 
+    builder.addCase(setReportViewed.pending, (state) => {
+      state.reports.status = 'loading';
+    });
     builder.addCase(getReports.pending, (state) => {
-      toast.success('Money not added');
+      state.reports.status = 'loading'
     });
     builder.addCase(getReports.fulfilled, (state, action) => {
-      toast.success('Money was successfully added');
+      state.reports.status = 'loaded';
+      state.reports.list = action.payload
     });
   },
 });

@@ -1,0 +1,17 @@
+.reports{
+  &-item{
+    &-text{
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  }
+  &-filters{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  &-body{
+    display: flex;
+    flex-direction: column;
+  }
+}
